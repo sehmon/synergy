@@ -1,0 +1,23 @@
+{
+  "name": "synergy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace=@synergy/server",
+    "dev:client": "npm run dev --workspace=@synergy/client",
+    "build": "npm run build --workspaces",
+    "prisma:generate": "npm run prisma:generate --workspace=@synergy/server",
+    "prisma:migrate": "npm run prisma:migrate --workspace=@synergy/server"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

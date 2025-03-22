@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./packages/server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./packages/server:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  client:
+    build:
+      context: ./packages/client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages/client:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:5000
+    depends_on:
+      - server
+    command: npm start
