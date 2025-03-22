@@ -1,1 +1,2 @@
 # synergy
+`npm run dev`
