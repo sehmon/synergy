@@ -6,6 +6,7 @@ import { Vector3, Object3D, Mesh } from 'three';
 interface ModelProps {
   path: string;
   position?: Vector3;
+  scale?: number;
   enableShadows?: boolean;
 }
 
@@ -15,6 +16,7 @@ interface ModelProps {
 function Model({
   path,
   position = new Vector3(0, 0, 0),
+  scale = 0.2,
   enableShadows = true,
 }: ModelProps) {
   // Load the model with caching enabled
@@ -35,7 +37,7 @@ function Model({
   }, [enableShadows]);
 
   return (
-    <group rotation={[0, Math.PI / 2, 0]} scale={0.2} position={position}>
+    <group rotation={[0, Math.PI / 2, 0]} scale={scale} position={position}>
       <primitive object={clonedScene.current} />
     </group>
   );

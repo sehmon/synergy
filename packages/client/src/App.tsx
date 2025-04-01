@@ -1,11 +1,10 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 import Ground from './components/Ground';
 import Model from './components/Model';
-import ModelWithLOD from './components/ModelWithLOD';
 import OptimizedScene from './components/OptimizedScene';
 import ModelLoader from './components/ModelLoader';
 import CameraControls from './components/CameraControls';
@@ -120,22 +119,43 @@ function App() {
               {/* Close objects with full detail and shadows */}
               <Model path="/table.glb" enableShadows={true} />
 
-              {/* Medium distance object with selective shadows and LOD */}
-              <ModelWithLOD
+              {/* Ring of sculptures without LOD */}
+              <Model
                 path="/sculpture.glb"
-                position={new THREE.Vector3(0, 0, -7)}
-                hiDetailDistance={10}
-                medDetailDistance={20}
-                lowDetailDistance={30}
+                position={new THREE.Vector3(-5, 0, -7)}
+                scale={0.3}
+                enableShadows={true}
               />
 
-              {/* Far object with no shadows and simplified rendering */}
+              <Model
+                path="/sculpture.glb"
+                position={new THREE.Vector3(5, 0, -7)}
+                scale={0.3}
+                enableShadows={true}
+              />
+
               <Model
                 path="/sculpture.glb"
                 position={new THREE.Vector3(0, 0, -12)}
+                scale={0.4}
+                enableShadows={true}
+              />
+
+              <Model
+                path="/sculpture.glb"
+                position={new THREE.Vector3(-7, 0, -15)}
+                scale={0.25}
                 enableShadows={false}
               />
 
+              <Model
+                path="/sculpture.glb"
+                position={new THREE.Vector3(7, 0, -15)}
+                scale={0.25}
+                enableShadows={false}
+              />
+
+              {/* Video screens */}
               <VideoTexture
                 url="/src/assets/cat.mp4"
                 position={[-5, 4, -10]}
