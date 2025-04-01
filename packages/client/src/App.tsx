@@ -1,12 +1,16 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 import Ground from './components/Ground';
 import Model from './components/Model';
+import ModelWithLOD from './components/ModelWithLOD';
+import OptimizedScene from './components/OptimizedScene';
+import ModelLoader from './components/ModelLoader';
 import CameraControls from './components/CameraControls';
 import Onboarding from './components/Onboarding';
+import VideoTexture from './components/VideoTexture';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
@@ -110,20 +114,43 @@ function App() {
         {/* Add the ground */}
         <Ground />
 
-        <Suspense
-          fallback={
-            <mesh>
-              <boxGeometry />
-              <meshStandardMaterial color="gray" />
-            </mesh>
-          }
-        >
-          <Model path="/table.glb" />
-          <Model path="/sculpture.glb" position={new THREE.Vector3(0, 0, -7)} />
-          <Model
-            path="/sculpture.glb"
-            position={new THREE.Vector3(0, 0, -12)}
-          />
+        <Suspense fallback={null}>
+          <ModelLoader>
+            <OptimizedScene frustumCulling={true}>
+              {/* Close objects with full detail and shadows */}
+              <Model path="/table.glb" enableShadows={true} />
+
+              {/* Medium distance object with selective shadows and LOD */}
+              <ModelWithLOD
+                path="/sculpture.glb"
+                position={new THREE.Vector3(0, 0, -7)}
+                hiDetailDistance={10}
+                medDetailDistance={20}
+                lowDetailDistance={30}
+              />
+
+              {/* Far object with no shadows and simplified rendering */}
+              <Model
+                path="/sculpture.glb"
+                position={new THREE.Vector3(0, 0, -12)}
+                enableShadows={false}
+              />
+
+              <VideoTexture
+                url="/src/assets/cat.mp4"
+                position={[-5, 4, -10]}
+                rotation={[0, Math.PI / 4, 0]}
+                scale={[0.5, 0.5, 0.5]}
+              />
+
+              <VideoTexture
+                url="/src/assets/cat.mp4"
+                position={[5, 4, -10]}
+                rotation={[0, -Math.PI / 4, 0]}
+                scale={[0.5, 0.5, 0.5]}
+              />
+            </OptimizedScene>
+          </ModelLoader>
         </Suspense>
         <CameraControls />
 

@@ -1,27 +1,45 @@
-//@ts-nocheck
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { Vector3 } from 'three';
+import { Vector3, Object3D, Mesh } from 'three';
 
-function Model({ path, position = new Vector3(0, 0, 0) }) {
-  const { scene } = useGLTF(path);
+// Define types
+interface ModelProps {
+  path: string;
+  position?: Vector3;
+  enableShadows?: boolean;
+}
 
-  const sceneClone = useRef(scene.clone(true));
+// Model cloning is necessary when reusing the same model in multiple places
+// useGLTF caches the original model loading, but we need to clone for multiple instances
 
+function Model({
+  path,
+  position = new Vector3(0, 0, 0),
+  enableShadows = true,
+}: ModelProps) {
+  // Load the model with caching enabled
+  const { scene } = useGLTF(path, true);
+  // We need to clone the scene to use it multiple times
+  const clonedScene = useRef(scene.clone(true));
+  
   useEffect(() => {
-    sceneClone.current.traverse((node) => {
-      if (node.isMesh) {
-        node.castShadow = true;
-        node.receiveShadow = true;
-      }
-    });
-  }, []);
+    // Configure shadow settings on the cloned scene
+    if (clonedScene.current) {
+      clonedScene.current.traverse((node) => {
+        if ((node as Mesh).isMesh && enableShadows) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+        }
+      });
+    }
+  }, [enableShadows]);
 
   return (
     <group rotation={[0, Math.PI / 2, 0]} scale={0.2} position={position}>
-      <primitive object={sceneClone.current} />
+      <primitive object={clonedScene.current} />
     </group>
   );
 }
 
-export default Model;
+// Use memo to prevent unnecessary re-renders
+export default memo(Model);
