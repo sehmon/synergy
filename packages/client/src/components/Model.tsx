@@ -1,6 +1,6 @@
 import { useRef, useEffect, memo } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { Vector3, Object3D, Mesh } from 'three';
+import { Vector3, Mesh } from 'three';
 
 // Define types
 interface ModelProps {
