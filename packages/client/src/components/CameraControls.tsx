@@ -102,7 +102,11 @@ function CameraControls() {
     const direction = new Vector3();
     camera.getWorldDirection(direction);
 
-    // Forward/backward movement along the direction vector
+    // Project direction onto XZ plane (y=0) to prevent vertical movement
+    direction.y = 0;
+    direction.normalize();
+
+    // Forward/backward movement along the flattened direction vector
     if (moveState.current.forward) {
       camera.position.addScaledVector(direction, movementSpeed);
     }
@@ -111,8 +115,8 @@ function CameraControls() {
     }
 
     // Left/right movement perpendicular to direction vector
-    const rightVector = new Vector3();
-    rightVector.crossVectors(camera.up, direction).normalize();
+    const rightVector = new Vector3(0, 0, 0);
+    rightVector.crossVectors(new Vector3(0, 1, 0), direction).normalize();
 
     if (moveState.current.right) {
       camera.position.addScaledVector(rightVector, -movementSpeed);
@@ -120,6 +124,9 @@ function CameraControls() {
     if (moveState.current.left) {
       camera.position.addScaledVector(rightVector, movementSpeed);
     }
+
+    // Lock the camera height to a fixed Y position
+    camera.position.y = 0.5; // Same height as initial camera position
   });
   // @ts-ignore
   return <PointerLockControls ref={controlsRef} />;

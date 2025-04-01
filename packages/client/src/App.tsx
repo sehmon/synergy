@@ -64,7 +64,7 @@ function App() {
           width: '100vw',
         }}
         shadows
-        camera={{ position: [0, 2, 5], fov: 60 }}
+        camera={{ position: [0, 0.5, 5], fov: 60 }}
       >
         {/* Ambient light - reduced intensity for better contrast */}
         <ambientLight intensity={0.5} />
