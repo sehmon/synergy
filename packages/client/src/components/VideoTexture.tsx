@@ -20,30 +20,30 @@ const VideoTexture = ({
 
   useEffect(() => {
     const video = videoRef.current;
-    
+
     // Set up event handlers before setting src
     video.crossOrigin = 'Anonymous';
     video.loop = true;
     video.muted = true; // Autoplay requires muted video
     video.playsInline = true;
-    
+
     // Add error handling
-    video.onerror = (e) => {
+    video.onerror = () => {
       console.error('Video loading error:', video.error);
     };
-    
+
     video.onloadeddata = () => {
       console.log('Video loaded successfully:', url);
       setVideoLoaded(true);
-      video.play().catch(err => {
+      video.play().catch((err) => {
         console.error('Error playing video:', err);
       });
     };
-    
+
     // Now set the src
     console.log('Loading video from URL:', url);
     video.src = url;
-    
+
     // Create texture regardless of video load status
     const texture = new THREE.VideoTexture(video);
     texture.minFilter = THREE.LinearFilter;
@@ -56,7 +56,7 @@ const VideoTexture = ({
       texture.dispose();
     };
   }, [url]);
-  
+
   // Apply texture to mesh when both are available
   useEffect(() => {
     if (meshRef.current && videoLoaded) {
@@ -65,7 +65,7 @@ const VideoTexture = ({
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
       texture.format = THREE.RGBAFormat;
-      
+
       meshRef.current.material.map = texture;
       meshRef.current.material.needsUpdate = true;
     }

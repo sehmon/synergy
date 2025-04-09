@@ -1,4 +1,4 @@
-import { Grid } from '@react-three/drei';
+// import { Grid } from '@react-three/drei';
 
 function Ground() {
   return (

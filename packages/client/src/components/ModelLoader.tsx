@@ -6,8 +6,8 @@ interface ModelLoaderProps {
 }
 
 function ModelLoader({ children }: ModelLoaderProps) {
-  const { active, progress, errors, item, loaded, total } = useProgress();
-  
+  const { active, progress, errors, item } = useProgress();
+
   useEffect(() => {
     if (errors.length > 0) {
       console.error('Error loading assets:', errors);
@@ -19,9 +19,26 @@ function ModelLoader({ children }: ModelLoaderProps) {
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="hotpink" wireframe />
-        <Html position={[0, 1.5, 0]} center style={{ color: 'white', width: '100px', textAlign: 'center' }}>
-          <div style={{ background: 'rgba(0,0,0,0.7)', padding: '10px', borderRadius: '5px' }}>
-            <div style={{ width: `${progress}%`, height: '5px', background: 'white', marginBottom: '5px' }} />
+        <Html
+          position={[0, 1.5, 0]}
+          center
+          style={{ color: 'white', width: '100px', textAlign: 'center' }}
+        >
+          <div
+            style={{
+              background: 'rgba(0,0,0,0.7)',
+              padding: '10px',
+              borderRadius: '5px',
+            }}
+          >
+            <div
+              style={{
+                width: `${progress}%`,
+                height: '5px',
+                background: 'white',
+                marginBottom: '5px',
+              }}
+            />
             <div>{Math.round(progress)}%</div>
             <div style={{ fontSize: '10px' }}>{item}</div>
           </div>

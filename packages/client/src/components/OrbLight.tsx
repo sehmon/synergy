@@ -1,7 +1,6 @@
 import { useRef } from 'react';
-import { PointLight, Mesh, PointLightHelper } from 'three';
+import { PointLight, Mesh, Group } from 'three';
 import { useFrame } from '@react-three/fiber';
-import { useHelper } from '@react-three/drei';
 
 interface OrbLightProps {
   position?: [number, number, number];
@@ -21,18 +20,18 @@ const OrbLight = ({
   size = 0.15,
   amplitude = 0.1,
   speed = 1,
-  debug = false,
+  // debug = false,
   phaseOffset = 0,
 }: OrbLightProps) => {
   const lightRef = useRef<PointLight>(null);
   const sphereRef = useRef<Mesh>(null);
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<Group>(null);
 
   const initialY = position[1];
 
-  if (debug) {
-    useHelper(lightRef, PointLightHelper, 0.5);
-  }
+  // if (debug) {
+  //   useHelper(lightRef, PointLightHelper, 0.5);
+  // }
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
