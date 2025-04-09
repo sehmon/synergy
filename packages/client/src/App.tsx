@@ -205,27 +205,27 @@ function App() {
 
               {/* Video screens */}
               <VideoTexture
-                url="/src/assets/flower_video.mov"
+                url="/flower_video.mov"
                 position={[-5, 4, -10]}
                 rotation={[0, Math.PI / 4, 0]}
                 scale={[0.5, 0.5, 0.5]}
               />
 
               <VideoTexture
-                url="/src/assets/flower_video.mov"
+                url="/flower_video.mov"
                 position={[5, 4, -10]}
                 rotation={[0, -Math.PI / 4, 0]}
                 scale={[0.5, 0.5, 0.5]}
               />
 
               <VideoTexture
-                url="/src/assets/fire.mov"
+                url="/fire.mov"
                 position={[0, 2, -12]}
                 rotation={[0, 0, Math.PI / 2]}
                 scale={[0.2, 0.2, 0.25]}
               />
               <VideoTexture
-                url="/src/assets/fire.mov"
+                url="/fire.mov"
                 position={[0, 2, -12]}
                 rotation={[Math.PI, 0, -Math.PI / 2]}
                 scale={[0.2, 0.2, 0.25]}
