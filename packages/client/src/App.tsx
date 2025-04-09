@@ -10,6 +10,7 @@ import ModelLoader from './components/ModelLoader';
 import CameraControls from './components/CameraControls';
 import Onboarding from './components/Onboarding';
 import VideoTexture from './components/VideoTexture';
+import OrbLight from './components/OrbLight';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
@@ -118,6 +119,53 @@ function App() {
             <OptimizedScene frustumCulling={true}>
               {/* Close objects with full detail and shadows */}
               <Model path="/table.glb" enableShadows={true} />
+
+              {/* Orb light hovering above the table */}
+              <OrbLight
+                position={[0, 2.5, -10]}
+                color="#ffffff"
+                intensity={10.0}
+                size={0.4}
+                amplitude={2}
+                speed={0.8}
+                phaseOffset={1}
+              />
+              <OrbLight
+                position={[0, 2.5, -8]}
+                color="#ffffff"
+                intensity={10.0}
+                size={0.4}
+                amplitude={2}
+                speed={0.8}
+                phaseOffset={2}
+              />
+              <OrbLight
+                position={[0, 2.5, -6]}
+                color="#ffffff"
+                intensity={10.0}
+                size={0.4}
+                amplitude={2}
+                speed={0.8}
+                phaseOffset={3}
+              />
+              <OrbLight
+                position={[0, 2.5, -4]}
+                color="#ffffff"
+                intensity={10.0}
+                size={0.4}
+                amplitude={2}
+                speed={0.8}
+                phaseOffset={4}
+              />
+              <OrbLight
+                position={[0, 2.5, -2]}
+                color="#ffffff"
+                intensity={10.0}
+                size={0.4}
+                amplitude={2}
+                speed={0.8}
+                phaseOffset={5}
+              />
 
               {/* Ring of sculptures without LOD */}
               <Model
