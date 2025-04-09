@@ -14,7 +14,8 @@ const VideoTexture = ({
   rotation = [0, 0, 0],
   scale = [1, 1, 1],
 }: VideoTextureProps) => {
-  const meshRef = useRef(null);
+  const meshRef =
+    useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>>(null);
   const videoRef = useRef(document.createElement('video'));
   const [videoLoaded, setVideoLoaded] = useState(false);
 

@@ -12,7 +12,7 @@ interface Obstacle {
 
 // Add controller for camera movement
 function CameraControls() {
-  const controlsRef = useRef<typeof PointerLockControls | undefined>();
+  const controlsRef = useRef<typeof PointerLockControls>(null);
   const { camera, gl } = useThree();
   // State for debug mode - press 'B' to toggle visibility
   const [debugMode, setDebugMode] = useState(false);

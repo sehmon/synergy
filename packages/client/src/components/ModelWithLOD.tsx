@@ -52,7 +52,7 @@ function ModelWithLOD({
     // Low detail - visible but simplified representation
     // Instead of wireframe sphere, use a simplified version of the model
     const lowDetail = scene.clone();
-    lowDetail.traverse((node) => {
+    lowDetail.traverse((node: any) => {
       if ((node as Mesh).isMesh) {
         node.castShadow = false;
         node.receiveShadow = false;
