@@ -6,11 +6,11 @@ function Ground() {
       {/* Simple floor plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[30, 30]} />
-        <meshStandardMaterial color="#444444" roughness={0.7} metalness={0.1} />
+        <meshStandardMaterial color="#222" roughness={0.7} metalness={0.1} />
       </mesh>
 
       {/* Optional grid helper for better spatial awareness */}
-      <Grid
+      {/* <Grid
         position={[0, 0.01, 0]}
         args={[30, 30]}
         cellSize={1}
@@ -21,7 +21,7 @@ function Ground() {
         sectionColor="#888888"
         fadeDistance={30}
         infiniteGrid
-      />
+      /> */}
     </>
   );
 }

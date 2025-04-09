@@ -179,7 +179,7 @@ function CameraControls() {
     }
 
     // Lock the camera height to a fixed Y position
-    newPosition.y = 0.5;
+    newPosition.y = 1;
 
     // Only update position if there's no collision
     if (!checkCollision(newPosition)) {

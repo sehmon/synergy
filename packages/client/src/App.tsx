@@ -63,7 +63,7 @@ function App() {
           width: '100vw',
         }}
         shadows
-        camera={{ position: [0, 0.5, 5], fov: 60 }}
+        camera={{ position: [0, 1, 5], fov: 60 }}
       >
         {/* Ambient light - reduced intensity for better contrast */}
         <ambientLight intensity={0.5} />
@@ -157,17 +157,30 @@ function App() {
 
               {/* Video screens */}
               <VideoTexture
-                url="/src/assets/cat.mp4"
+                url="/src/assets/flower_video.mov"
                 position={[-5, 4, -10]}
                 rotation={[0, Math.PI / 4, 0]}
                 scale={[0.5, 0.5, 0.5]}
               />
 
               <VideoTexture
-                url="/src/assets/cat.mp4"
+                url="/src/assets/flower_video.mov"
                 position={[5, 4, -10]}
                 rotation={[0, -Math.PI / 4, 0]}
                 scale={[0.5, 0.5, 0.5]}
+              />
+
+              <VideoTexture
+                url="/src/assets/fire.mov"
+                position={[0, 2, -12]}
+                rotation={[0, 0, Math.PI / 2]}
+                scale={[0.2, 0.2, 0.25]}
+              />
+              <VideoTexture
+                url="/src/assets/fire.mov"
+                position={[0, 2, -12]}
+                rotation={[Math.PI, 0, -Math.PI / 2]}
+                scale={[0.2, 0.2, 0.25]}
               />
             </OptimizedScene>
           </ModelLoader>
@@ -175,7 +188,7 @@ function App() {
         <CameraControls />
 
         {/* Optional fog for depth */}
-        <fog attach="fog" args={['#202030', 10, 50]} />
+        <fog attach="fog" args={['#000', 10, 20]} />
       </Canvas>
     </div>
   );
