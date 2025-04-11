@@ -1,24 +1,58 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
+import './mobileControls.css';
 import Ground from './components/Ground';
 import Model from './components/Model';
 import OptimizedScene from './components/OptimizedScene';
 import ModelLoader from './components/ModelLoader';
-import CameraControls from './components/CameraControls';
+// CameraControls is not used in current implementation
+// import CameraControls from './components/CameraControls';
 import Onboarding from './components/Onboarding';
 import VideoTexture from './components/VideoTexture';
 import OrbLight from './components/OrbLight';
 import { Physics, RigidBody } from '@react-three/rapier';
 import CameraPlayer from './components/CameraPlayer';
+import useJoystickControls from './hooks/useJoystickControls';
+import MobileJoysticks from './components/MobileJoysticks';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
 
 function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(true);
+  const { moveJoystick, lookJoystick } = useJoystickControls();
+
+  // Detect mobile and fix vh for iOS Safari
+  useEffect(() => {
+    // Check if on mobile
+    const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    setIsMobile(mobile);
+
+    // Fix for iOS Safari 100vh issue
+    const setVhProperty = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVhProperty();
+    window.addEventListener('resize', setVhProperty);
+
+    // Hide instructions after 5 seconds
+    if (mobile) {
+      const timer = setTimeout(() => setShowInstructions(false), 5000);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', setVhProperty);
+      };
+    }
+
+    return () => window.removeEventListener('resize', setVhProperty);
+  }, []);
 
   const onOnboardingComplete = () => {
     setOnboardingComplete(true);
@@ -43,30 +77,65 @@ function App() {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      <div
-        className="crosshair"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          color: 'white',
-          fontSize: '24px',
-          pointerEvents: 'none',
-          zIndex: 999,
-          userSelect: 'none',
-        }}
-      >
-        <p>+</p>
-      </div>
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%' }}
+      className="full-height"
+    >
+      {/* Mobile instructions */}
+      {isMobile && (
+        <div
+          className={`mobile-instructions ${!showInstructions ? 'hidden' : ''}`}
+        >
+          <p>Use left side of screen to move</p>
+          <p>Use right side of screen to look around</p>
+        </div>
+      )}
+
+      {/* Show joystick UI (outside of Canvas) */}
+      {isMobile && (
+        <MobileJoysticks
+          moveJoystick={moveJoystick}
+          lookJoystick={lookJoystick}
+        />
+      )}
+
+      {/* Only show crosshair on desktop */}
+      {!isMobile && (
+        <div
+          className="crosshair"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: 'white',
+            fontSize: '24px',
+            pointerEvents: 'none',
+            zIndex: 999,
+            userSelect: 'none',
+          }}
+        >
+          <p>+</p>
+        </div>
+      )}
+
       <Canvas
         style={{
           height: '100vh',
           width: '100vw',
+          touchAction: 'none', // Prevent scroll/zoom on mobile
         }}
         shadows
         camera={{ position: [0, 1, 5], fov: 60 }}
+        // Add mobile-friendly options
+        onCreated={({ gl }) => {
+          if (isMobile) {
+            // Disable context menu on right-click/long-press
+            gl.domElement.addEventListener('contextmenu', (e) =>
+              e.preventDefault()
+            );
+          }
+        }}
       >
         <Physics gravity={[0, 0, 0]}>
           {/* Ambient light - reduced intensity for better contrast */}
@@ -230,18 +299,12 @@ function App() {
 
                 <VideoTexture
                   url="/flower_video.mov"
-                  position={[0, 0, 0]}
-                  rotation={[0, Math.PI / 4, 0]}
-                  scale={[0.5, 0.5, 0.5]}
-                />
-
-                <VideoTexture
-                  url="/flower_video.mov"
                   position={[5, 4, -10]}
                   rotation={[0, -Math.PI / 4, 0]}
                   scale={[0.5, 0.5, 0.5]}
                 />
 
+                {/* Safari will automatically try to use .mp4 version */}
                 <VideoTexture
                   url="/fire.mov"
                   position={[0, 2, -12]}

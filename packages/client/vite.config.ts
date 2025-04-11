@@ -14,4 +14,8 @@ export default defineConfig({
     },
   },
   publicDir: 'public',
+  server: {
+    host: '0.0.0.0',
+    port: 5173
+  }  
 })
