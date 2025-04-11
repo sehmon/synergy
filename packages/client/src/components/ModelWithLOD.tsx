@@ -54,11 +54,12 @@ function ModelWithLOD({
     const lowDetail = scene.clone();
     lowDetail.traverse((node: Object3D) => {
       if ((node as Mesh).isMesh) {
-        node.castShadow = false;
-        node.receiveShadow = false;
+        const mesh = node as Mesh;  // Explicitly cast to Mesh
+        mesh.castShadow = false;
+        mesh.receiveShadow = false;
         // Replace materials with simplified versions
-        if (node.material) {
-          node.material = new MeshBasicMaterial({
+        if (mesh.material) {
+          mesh.material = new MeshBasicMaterial({
             color: 'lightgray',
             wireframe: false,
           });

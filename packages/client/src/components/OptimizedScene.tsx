@@ -53,28 +53,31 @@ function OptimizedScene({
       // Apply frustum culling to all objects
       groupRef.current.traverse((object: THREE.Object3D) => {
         if (object.type === 'Mesh') {
+          // Cast to Mesh type to access geometry
+          const mesh = object as THREE.Mesh;
+          
           // Skip already invisible objects
-          if (!object.visible) return;
+          if (!mesh.visible) return;
 
           // Only compute for objects that haven't already been processed
-          if (object.userData.frustumCulled === undefined) {
+          if (mesh.userData.frustumCulled === undefined) {
             // Create a bounding sphere if it doesn't exist
-            if (!object.geometry.boundingSphere) {
-              object.geometry.computeBoundingSphere();
+            if (!mesh.geometry.boundingSphere) {
+              mesh.geometry.computeBoundingSphere();
             }
 
             // Get world position
             const worldPos = new THREE.Vector3();
-            object.getWorldPosition(worldPos);
+            mesh.getWorldPosition(worldPos);
 
             // Create a world space bounding sphere
-            const worldBoundingSphere = object.geometry.boundingSphere!.clone();
+            const worldBoundingSphere = mesh.geometry.boundingSphere!.clone();
             worldBoundingSphere.center.copy(worldPos);
 
             // Test against frustum
             const isVisible = frustum.intersectsSphere(worldBoundingSphere);
-            object.visible = isVisible;
-            object.userData.frustumCulled = true;
+            mesh.visible = isVisible;
+            mesh.userData.frustumCulled = true;
           }
         }
       });
