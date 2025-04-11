@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { Vector3, Group, LOD, Mesh, MeshBasicMaterial } from 'three';
+import { Vector3, Group, LOD, Mesh, MeshBasicMaterial, Object3D } from 'three';
 
 interface ModelWithLODProps {
   path: string;
@@ -52,7 +52,7 @@ function ModelWithLOD({
     // Low detail - visible but simplified representation
     // Instead of wireframe sphere, use a simplified version of the model
     const lowDetail = scene.clone();
-    lowDetail.traverse((node: any) => {
+    lowDetail.traverse((node: Object3D) => {
       if ((node as Mesh).isMesh) {
         node.castShadow = false;
         node.receiveShadow = false;
@@ -110,10 +110,13 @@ function ModelWithLOD({
     // Force highest detail for debugging if needed
     // lod.forcedLevel = 0; // Uncomment to force highest detail always
 
+    // Store a reference to the current group to avoid the React hooks warning
+    const currentGroup = groupRef.current;
+    
     return () => {
       // Cleanup specific to this component
-      if (groupRef.current && groupRef.current.children.includes(lod)) {
-        groupRef.current.remove(lod);
+      if (currentGroup && currentGroup.children.includes(lod)) {
+        currentGroup.remove(lod);
       }
     };
   }, [
@@ -123,6 +126,7 @@ function ModelWithLOD({
     medDetailDistance,
     lowDetailDistance,
     path,
+    position, // Add position to dependency array as it's used in the effect
   ]);
 
   // Update LOD on each frame and log for debugging

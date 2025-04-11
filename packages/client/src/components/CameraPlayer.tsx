@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
-import { RigidBody, CapsuleCollider } from '@react-three/rapier';
+import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier';
 import { PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import useKeyboardControls from '../hooks/useKeyboardControls';
@@ -8,33 +8,30 @@ import useJoystickControls from '../hooks/useJoystickControls';
 // MobileJoysticks is rendered at App level
 
 export default function CameraPlayer() {
-  // Use a more specific type for the rigid body reference
-  const ref = useRef<{
-    setLinvel: (velocity: { x: number; y: number; z: number }, preserveVelocity: boolean) => void;
-    translation: () => { x: number; y: number; z: number };
-  }>(null);
+  // Use the correct RapierRigidBody type from @react-three/rapier
+  const ref = useRef<RapierRigidBody>(null);
   const { camera } = useThree();
   const keys = useKeyboardControls();
-  const { joystickState, rotationState, moveJoystick, lookJoystick } = useJoystickControls();
+  const { joystickState, rotationState, moveJoystick } = useJoystickControls();
   const [isMobile, setIsMobile] = useState(false);
-  
+
   // Detect if we're on mobile and set up camera
   useEffect(() => {
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
-    
+
     // Initialize camera to be level
     camera.rotation.x = 0;
     camera.rotation.z = 0;
-    
+
     // Create a function to force camera to stay level
     const keepCameraLevel = () => {
       camera.rotation.x = 0;
       camera.rotation.z = 0;
     };
-    
+
     // Add event listener to keep camera level on device orientation change
     window.addEventListener('deviceorientation', keepCameraLevel);
-    
+
     return () => {
       window.removeEventListener('deviceorientation', keepCameraLevel);
     };
@@ -45,20 +42,20 @@ export default function CameraPlayer() {
   const velocity = new THREE.Vector3();
   // Camera rotation is handled directly
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!ref.current) return;
 
     const body = ref.current;
 
     // Handle movement input - combine keyboard and joystick
     direction.set(0, 0, 0);
-    
+
     // Keyboard controls
     if (keys.w) direction.z -= 1;
     if (keys.s) direction.z += 1;
     if (keys.a) direction.x += 1;
     if (keys.d) direction.x -= 1;
-    
+
     // Add joystick movement if active
     if (moveJoystick.active && isMobile) {
       direction.z -= joystickState.forward;
@@ -91,17 +88,17 @@ export default function CameraPlayer() {
     // Update camera position
     const pos = body.translation();
     camera.position.set(pos.x, pos.y + 0.5, pos.z);
-    
+
     // Handle camera rotation using rotationState
     if (isMobile) {
       // Apply rotation using the rotationState values instead of raw joystick position
       const lookSensitivity = 2.0;
-      
+
       // Apply horizontal rotation from joystick, keeping the camera level
       if (rotationState.rotateY !== 0) {
         camera.rotation.y += rotationState.rotateY * delta * lookSensitivity;
       }
-      
+
       // Always keep camera level by forcing X and Z rotation to zero
       camera.rotation.x = 0;
       camera.rotation.z = 0;
@@ -112,7 +109,7 @@ export default function CameraPlayer() {
     <>
       {/* Only use PointerLockControls on desktop */}
       {!isMobile && <PointerLockControls />}
-      
+
       {/* Rigid body for physics */}
       <RigidBody
         ref={ref}
@@ -131,7 +128,7 @@ export default function CameraPlayer() {
         {/* Physics collider */}
         <CapsuleCollider args={[0.5, 0.3]} />
       </RigidBody>
-      
+
       {/* Mobile joysticks UI is rendered at the App level */}
     </>
   );

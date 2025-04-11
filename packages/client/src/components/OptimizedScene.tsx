@@ -51,7 +51,7 @@ function OptimizedScene({
       frustum.setFromProjectionMatrix(projScreenMatrix);
 
       // Apply frustum culling to all objects
-      groupRef.current.traverse((object: any) => {
+      groupRef.current.traverse((object: THREE.Object3D) => {
         if (object.type === 'Mesh') {
           // Skip already invisible objects
           if (!object.visible) return;
