@@ -198,7 +198,7 @@ function App() {
                   color="#ffffff"
                   intensity={10.0}
                   size={0.4}
-                  amplitude={2}
+                  amplitude={1}
                   speed={0.8}
                   phaseOffset={1}
                 />
@@ -207,7 +207,7 @@ function App() {
                   color="#ffffff"
                   intensity={10.0}
                   size={0.4}
-                  amplitude={2}
+                  amplitude={1}
                   speed={0.8}
                   phaseOffset={2}
                 />
@@ -216,7 +216,7 @@ function App() {
                   color="#ffffff"
                   intensity={10.0}
                   size={0.4}
-                  amplitude={2}
+                  amplitude={1}
                   speed={0.8}
                   phaseOffset={3}
                 />
@@ -225,7 +225,7 @@ function App() {
                   color="#ffffff"
                   intensity={10.0}
                   size={0.4}
-                  amplitude={2}
+                  amplitude={1}
                   speed={0.8}
                   phaseOffset={4}
                 />
@@ -234,7 +234,7 @@ function App() {
                   color="#ffffff"
                   intensity={10.0}
                   size={0.4}
-                  amplitude={2}
+                  amplitude={1}
                   speed={0.8}
                   phaseOffset={5}
                 />
@@ -274,19 +274,19 @@ function App() {
                   enableShadows={false}
                 />
 
-                <RigidBody type="fixed" colliders="trimesh">
+                {/* <RigidBody type="fixed" colliders="trimesh">
                   <Model
                     path="/maze.glb"
                     position={new THREE.Vector3(15, 0, -10)}
                     scale={1}
                     enableShadows={false}
                   />
-                </RigidBody>
+                </RigidBody> */}
 
                 <Model
                   path="/object-e.glb"
-                  position={new THREE.Vector3(7, 0, -15)}
-                  scale={0.25}
+                  position={new THREE.Vector3(25, 3, 10)}
+                  scale={1}
                   enableShadows={false}
                 />
 
@@ -309,12 +309,6 @@ function App() {
                   url="/fire.mov"
                   position={[0, 2, -12]}
                   rotation={[0, 0, Math.PI / 2]}
-                  scale={[0.2, 0.2, 0.25]}
-                />
-                <VideoTexture
-                  url="/fire.mov"
-                  position={[0, 2, -12]}
-                  rotation={[Math.PI, 0, -Math.PI / 2]}
                   scale={[0.2, 0.2, 0.25]}
                 />
               </OptimizedScene>
