@@ -8,6 +8,8 @@ import useJoystickControls from './hooks/useJoystickControls';
 import MobileJoysticks from './components/MobileJoysticks';
 import MazeScene from './scenes/MazeScene';
 import DebugScene from './scenes/DebugScene';
+import DebugPanel from './components/DebugPanel';
+import useSocketEvents from './hooks/useSocketEvents';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
@@ -17,6 +19,8 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const { moveJoystick, lookJoystick } = useJoystickControls();
+
+  const { isConnected, fooEvents } = useSocketEvents();
 
   // Detect mobile and fix vh for iOS Safari
   useEffect(() => {
@@ -131,6 +135,7 @@ function App() {
         {/* <MazeScene /> */}
         <DebugScene />
       </Canvas>
+      <DebugPanel isConnected={isConnected} fooEvents={fooEvents} />
     </div>
   );
 }
