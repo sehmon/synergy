@@ -1,6 +1,6 @@
-// import { Grid } from '@react-three/drei';
+import { Grid } from '@react-three/drei';
 
-function Ground() {
+function Ground({ grid = false }: { grid?: boolean }) {
   return (
     <>
       {/* Simple floor plane */}
@@ -10,18 +10,20 @@ function Ground() {
       </mesh>
 
       {/* Optional grid helper for better spatial awareness */}
-      {/* <Grid
-        position={[0, 0.01, 0]}
-        args={[30, 30]}
-        cellSize={1}
-        cellThickness={0.5}
-        cellColor="#666666"
-        sectionSize={5}
-        sectionThickness={1}
-        sectionColor="#888888"
-        fadeDistance={30}
-        infiniteGrid
-      /> */}
+      {grid && (
+        <Grid
+          position={[0, 0.01, 0]}
+          args={[30, 30]}
+          cellSize={1}
+          cellThickness={0.5}
+          cellColor="#666666"
+          sectionSize={5}
+          sectionThickness={1}
+          sectionColor="#888888"
+          fadeDistance={30}
+          infiniteGrid
+        />
+      )}
     </>
   );
 }
