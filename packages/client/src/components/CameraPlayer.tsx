@@ -9,6 +9,7 @@ import { PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import useKeyboardControls from '../hooks/useKeyboardControls';
 import useJoystickControls from '../hooks/useJoystickControls';
+import TrailRenderer from './TrailRenderer';
 // MobileJoysticks is rendered at App level
 
 export default function CameraPlayer() {
@@ -18,6 +19,18 @@ export default function CameraPlayer() {
   const keys = useKeyboardControls();
   const { joystickState, rotationState, moveJoystick } = useJoystickControls();
   const [isMobile, setIsMobile] = useState(false);
+  const [showTrail, setShowTrail] = useState(true);
+
+  // Add global toggle function
+  useEffect(() => {
+    window.toggleTrail = () => {
+      setShowTrail(prev => !prev);
+    };
+    
+    return () => {
+      window.toggleTrail = undefined;
+    };
+  }, []);
 
   const positionHistoryRef = useRef<THREE.Vector3[]>([]);
 
@@ -156,6 +169,14 @@ export default function CameraPlayer() {
         {/* Physics collider */}
         <CapsuleCollider args={[0.5, 0.3]} />
       </RigidBody>
+
+      {/* Trail renderer to visualize the player's path */}
+      {showTrail && <TrailRenderer 
+        positionHistory={positionHistoryRef.current} 
+        color="#00ff88"
+        lineWidth={2}
+        maxLength={100}
+      />}
 
       {/* Mobile joysticks UI is rendered at the App level */}
     </>
