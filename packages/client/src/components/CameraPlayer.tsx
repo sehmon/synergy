@@ -1,6 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
-import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier';
+import {
+  RigidBody,
+  CapsuleCollider,
+  RapierRigidBody,
+} from '@react-three/rapier';
 import { PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import useKeyboardControls from '../hooks/useKeyboardControls';
@@ -14,6 +18,8 @@ export default function CameraPlayer() {
   const keys = useKeyboardControls();
   const { joystickState, rotationState, moveJoystick } = useJoystickControls();
   const [isMobile, setIsMobile] = useState(false);
+
+  const positionHistoryRef = useRef<THREE.Vector3[]>([]);
 
   // Detect if we're on mobile and set up camera
   useEffect(() => {
@@ -104,6 +110,28 @@ export default function CameraPlayer() {
       camera.rotation.z = 0;
     }
   });
+
+  const lastPositionRef = useRef<THREE.Vector3 | null>(null);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const pos = ref.current?.translation();
+      if (!pos) return;
+
+      const currentPos = new THREE.Vector3(pos.x, pos.y, pos.z);
+
+      if (
+        !lastPositionRef.current ||
+        !lastPositionRef.current.equals(currentPos)
+      ) {
+        lastPositionRef.current = currentPos.clone();
+        positionHistoryRef.current.push(currentPos.clone());
+        console.log('update to position history', positionHistoryRef.current);
+      }
+    }, 200);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
