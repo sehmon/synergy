@@ -5,8 +5,11 @@ import ModelLoader from '../components/ModelLoader';
 import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
 import OrbLight from '../components/OrbLight';
+import useSocketEvents from '../hooks/useSocketEvents';
 
 function DebugScene() {
+  const { isConnected, sliderValue } = useSocketEvents();
+
   return (
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
@@ -63,7 +66,7 @@ function DebugScene() {
             <OrbLight
               position={[0, 2, 0]}
               color="#ffffff"
-              intensity={10.0}
+              intensity={sliderValue ?? 1}
               size={0.4}
               amplitude={1}
               speed={0.8}

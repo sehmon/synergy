@@ -135,7 +135,7 @@ function App() {
         {/* <MazeScene /> */}
         <DebugScene />
       </Canvas>
-      <DebugPanel isConnected={isConnected} fooEvents={fooEvents} />
+      <DebugPanel />
     </div>
   );
 }

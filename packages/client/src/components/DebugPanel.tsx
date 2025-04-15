@@ -1,33 +1,8 @@
 // components/DebugPanel.tsx
-import { useEffect, useState } from 'react';
+import useSocketEvents from '../hooks/useSocketEvents';
 
-interface DebugPanelProps {
-  isConnected: boolean;
-  fooEvents: any[];
-}
-
-export default function DebugPanel({
-  isConnected,
-  fooEvents,
-}: DebugPanelProps) {
-  const [sliderValue, setSliderValue] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchSliderValue = async () => {
-      try {
-        const res = await fetch('http://localhost:4000/slider');
-        const data = await res.json();
-        setSliderValue(data.value);
-      } catch (err) {
-        console.error('Error fetching slider:', err);
-      }
-    };
-
-    fetchSliderValue();
-    const interval = setInterval(fetchSliderValue, 2000); // Poll every 2s
-
-    return () => clearInterval(interval);
-  }, []);
+export default function DebugPanel() {
+  const { sliderValue, isConnected, fooEvents } = useSocketEvents();
 
   return (
     <div
