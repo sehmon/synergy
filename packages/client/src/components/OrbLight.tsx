@@ -61,21 +61,18 @@ const OrbLight = ({
       {/* Core sphere - highly emissive */}
       <mesh ref={sphereRef} frustumCulled={true}>
         <sphereGeometry args={[size * 0.7, sphereDetail, sphereDetail]} />
-        <meshBasicMaterial 
-          color={color} 
-          transparent={false} 
-        />
+        <meshBasicMaterial color={color} transparent={false} />
       </mesh>
-      
+
       {/* Outer glow */}
       <mesh frustumCulled={true}>
         <sphereGeometry args={[size, sphereDetail, sphereDetail]} />
-        <meshStandardMaterial 
-          color={color} 
+        <meshStandardMaterial
+          color={color}
           emissive={color}
           emissiveIntensity={2}
-          transparent={true} 
-          opacity={0.6} 
+          transparent={true}
+          opacity={0.6}
         />
       </mesh>
     </group>
