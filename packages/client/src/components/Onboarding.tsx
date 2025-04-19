@@ -2,19 +2,77 @@ import { useState, useEffect } from 'react';
 import onboardingImage1 from '../assets/frame1.png';
 import onboardingImage2 from '../assets/frame2.png';
 
-function Onboarding({
-  onOnboardingComplete,
-}: {
+type OnboardingProps = {
   onOnboardingComplete: () => void;
-}) {
+};
+
+type OnboardingImageStepProps = {
+  image: string;
+  nextStep: number;
+  isMobile: boolean;
+  onNext: () => void;
+};
+
+function OnboardingImageStep({
+  image,
+  isMobile,
+  onNext,
+}: OnboardingImageStepProps) {
+  return (
+    <div
+      onClick={onNext}
+      onTouchStart={onNext}
+      style={{
+        cursor: 'pointer',
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
+        width: '100vw',
+        height: '100vh',
+        position: 'relative',
+      }}
+    >
+      <img
+        src={image}
+        style={{
+          width: '100vw',
+          height: '100vh',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+        }}
+        alt="Onboarding step"
+        draggable="false"
+      />
+
+      {/* Overlay button to ensure touchability */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '15%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '15px 30px',
+          backgroundColor: 'rgba(255,255,255,0.2)',
+          borderRadius: '8px',
+          color: 'white',
+          fontWeight: 'bold',
+          zIndex: 10,
+        }}
+      >
+        {isMobile ? 'TAP TO CONTINUE' : 'CLICK TO CONTINUE'}
+      </div>
+    </div>
+  );
+}
+
+function Onboarding({ onOnboardingComplete }: OnboardingProps) {
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     // Detect if user is on mobile
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
   }, []);
-  
+
   // Handle all touch/click events in one function
   const handleInteraction = (nextStep: number) => {
     if (nextStep === 4) {
@@ -26,116 +84,6 @@ function Onboarding({
     }
   };
 
-  const onboardingStep1 = () => {
-    return (
-      <div 
-        onClick={() => handleInteraction(2)}
-        onTouchStart={() => handleInteraction(2)}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          cursor: 'pointer',
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        <img
-          src={onboardingImage1}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-          }}
-          alt="Onboarding step 1"
-          draggable="false"
-        />
-        
-        {/* Overlay button to ensure touchability */}
-        <div 
-          style={{
-            position: 'absolute',
-            bottom: '15%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: '15px 30px',
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            borderRadius: '8px',
-            color: 'white',
-            fontWeight: 'bold',
-            zIndex: 10,
-          }}
-        >
-          {isMobile ? 'TAP TO CONTINUE' : 'CLICK TO CONTINUE'}
-        </div>
-      </div>
-    );
-  };
-
-  const onboardingStep2 = () => {
-    return (
-      <div
-        onClick={() => handleInteraction(3)}
-        onTouchStart={() => handleInteraction(3)}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          cursor: 'pointer',
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        <img
-          src={onboardingImage2}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-          }}
-          alt="Onboarding step 2"
-          draggable="false"
-        />
-        
-        {/* Overlay button to ensure touchability */}
-        <div 
-          style={{
-            position: 'absolute',
-            bottom: '15%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: '15px 30px',
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            borderRadius: '8px',
-            color: 'white',
-            fontWeight: 'bold',
-            zIndex: 10,
-          }}
-        >
-          {isMobile ? 'TAP TO CONTINUE' : 'CLICK TO CONTINUE'}
-        </div>
-      </div>
-    );
-  };
-
   const onboardingStep3 = () => {
     return (
       <div
@@ -145,7 +93,7 @@ function Onboarding({
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-          width: '100%',
+          width: '100vw',
           background: 'black',
           touchAction: 'manipulation',
         }}
@@ -172,16 +120,22 @@ function Onboarding({
         >
           {isMobile ? 'TAP TO BEGIN' : 'CLICK TO BEGIN'}
         </div>
-        
+
         {isMobile && (
-          <div style={{ 
-            color: 'white', 
-            marginTop: '30px', 
-            textAlign: 'center',
-            padding: '0 20px',
-          }}>
-            <p style={{ fontSize: '18px', marginBottom: '10px' }}>MOBILE CONTROLS:</p>
-            <p style={{ fontSize: '16px', marginBottom: '8px' }}>• Use LEFT side of screen to MOVE</p>
+          <div
+            style={{
+              color: 'white',
+              marginTop: '30px',
+              textAlign: 'center',
+              padding: '0 20px',
+            }}
+          >
+            <p style={{ fontSize: '18px', marginBottom: '10px' }}>
+              MOBILE CONTROLS:
+            </p>
+            <p style={{ fontSize: '16px', marginBottom: '8px' }}>
+              • Use LEFT side of screen to MOVE
+            </p>
             <p style={{ fontSize: '16px' }}>• Use RIGHT side to LOOK around</p>
           </div>
         )}
@@ -189,20 +143,34 @@ function Onboarding({
     );
   };
 
-  const onboardingSection = () => {
+  const renderOnboardingStep = () => {
     switch (onboardingStep) {
       case 1:
-        return onboardingStep1();
+        return (
+          <OnboardingImageStep
+            image={onboardingImage1}
+            nextStep={2}
+            isMobile={isMobile}
+            onNext={() => handleInteraction(2)}
+          />
+        );
       case 2:
-        return onboardingStep2();
+        return (
+          <OnboardingImageStep
+            image={onboardingImage2}
+            nextStep={3}
+            isMobile={isMobile}
+            onNext={() => handleInteraction(3)}
+          />
+        );
       case 3:
         return onboardingStep3();
       default:
-        return;
+        return null;
     }
   };
 
-  return onboardingSection();
+  return renderOnboardingStep();
 }
 
 export default Onboarding;
