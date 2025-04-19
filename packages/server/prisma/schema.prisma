@@ -9,3 +9,23 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+// Player trail models
+model PlayerTrail {
+  id            String         @id @default(uuid())
+  userId        String
+  timestamp     DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  metadata      String?        // Arbitrary JSON metadata
+  positions     Position[]
+}
+
+model Position {
+  id            String         @id @default(uuid())
+  x             Float
+  y             Float
+  z             Float
+  order         Int            // Position in the sequence
+  playerTrailId String
+  playerTrail   PlayerTrail    @relation(fields: [playerTrailId], references: [id], onDelete: Cascade)
+}

@@ -79,6 +79,19 @@
     .clear-btn:hover {
       background: #d32f2f;
     }
+    .delete-btn {
+      background: #f44336;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+    .delete-btn:hover {
+      background: #d32f2f;
+    }
+    .trail-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+    }
     .trail-stats {
       font-size: 0.9rem;
       color: #555;
@@ -306,6 +319,7 @@
       trails.forEach((trail, index) => {
         const timestamp = trail.userInfo?.timestamp || 'Unknown time';
         const userId = trail.userInfo?.id || 'Unknown user';
+        const trailId = trail.userInfo?.trailId;
         const positions = trail.positionHistory || [];
         
         const trailCard = document.createElement('div');
@@ -329,6 +343,34 @@
         const timeDiv = document.createElement('div');
         timeDiv.textContent = 'Time: ' + timestamp;
         meta.appendChild(timeDiv);
+        
+        // Add delete button if the trail has an ID
+        if (trailId) {
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-btn';
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.addEventListener('click', async () => {
+            try {
+              const response = await fetch(`/api/trails/${trailId}`, { 
+                method: 'DELETE' 
+              });
+              if (response.ok) {
+                trailCard.remove();
+                // Refresh data if this was the last trail
+                if (document.querySelectorAll('.trail-card').length === 0) {
+                  loadTrails();
+                }
+              }
+            } catch (error) {
+              console.error('Error deleting trail:', error);
+            }
+          });
+          
+          const actionDiv = document.createElement('div');
+          actionDiv.className = 'trail-actions';
+          actionDiv.appendChild(deleteBtn);
+          meta.appendChild(actionDiv);
+        }
         
         trailInfo.appendChild(meta);
         trailCard.appendChild(trailInfo);

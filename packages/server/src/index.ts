@@ -5,6 +5,7 @@ import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
 import { PlayerPositionData } from '@synergy/shared';
+import { TrailService } from './services/prisma.service';
 
 const app = express();
 const server = http.createServer(app);
@@ -38,41 +39,101 @@ app.get('/slider', (req, res) => {
   res.json({ value: sliderValue });
 });
 
-// Store recent player trails
-let recentTrails: PlayerPositionData[] = [];
-const MAX_STORED_TRAILS = 10;
-
-app.post('/player-trail', (req, res) => {
-  const response = req.body as PlayerPositionData;
-  const { userInfo, positionHistory } = response;
-  console.log('post to /player-trail of length', positionHistory.length);
-  
-  // Add to recent trails with timestamp
-  recentTrails.unshift({
-    ...response,
-    userInfo: {
-      ...response.userInfo,
-      timestamp: new Date().toISOString()
-    }
-  });
-  
-  // Keep only the recent MAX_STORED_TRAILS
-  if (recentTrails.length > MAX_STORED_TRAILS) {
-    recentTrails = recentTrails.slice(0, MAX_STORED_TRAILS);
+// Handle player trails using the database
+app.post('/player-trail', async (req, res) => {
+  try {
+    const response = req.body as PlayerPositionData;
+    const { userInfo, positionHistory } = response;
+    console.log('post to /player-trail of length', positionHistory.length);
+    
+    // Add timestamp if not present
+    const dataWithTimestamp = {
+      ...response,
+      userInfo: {
+        ...response.userInfo,
+        timestamp: new Date().toISOString()
+      }
+    };
+    
+    // Save to database
+    const trailId = await TrailService.saveTrail(dataWithTimestamp);
+    
+    res.json({ 
+      success: true, 
+      trailId,
+      message: 'Trail saved to database'
+    });
+  } catch (error) {
+    console.error('Error saving trail:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Failed to save trail'
+    });
   }
-  
-  res.json({ success: true, trailsStored: recentTrails.length });
 })
 
 // API endpoint to get all stored trails
-app.get('/api/trails', (req, res) => {
-  res.json({ trails: recentTrails });
+app.get('/api/trails', async (req, res) => {
+  try {
+    // Get limit from query params or default to 50
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+    
+    // Get trails from database
+    const trails = await TrailService.getAllTrails(limit);
+    
+    res.json({ trails });
+  } catch (error) {
+    console.error('Error fetching trails:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch trails'
+    });
+  }
 });
 
 // API endpoint to clear all trails
-app.post('/api/trails/clear', (req, res) => {
-  recentTrails = [];
-  res.json({ success: true, message: 'All trails cleared' });
+app.post('/api/trails/clear', async (req, res) => {
+  try {
+    // Clear all trails from database
+    const count = await TrailService.clearAllTrails();
+    
+    res.json({ 
+      success: true, 
+      message: `Successfully cleared ${count} trails from database` 
+    });
+  } catch (error) {
+    console.error('Error clearing trails:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to clear trails'
+    });
+  }
+});
+
+// API endpoint to delete a specific trail
+app.delete('/api/trails/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const success = await TrailService.deleteTrail(id);
+    
+    if (success) {
+      res.json({ 
+        success: true, 
+        message: `Successfully deleted trail ${id}` 
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: `Trail ${id} not found`
+      });
+    }
+  } catch (error) {
+    console.error(`Error deleting trail ${req.params.id}:`, error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete trail'
+    });
+  }
 });
 
 // Trail visualization page

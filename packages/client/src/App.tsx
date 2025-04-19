@@ -6,9 +6,9 @@ import './mobileControls.css';
 import Onboarding from './components/Onboarding';
 import useJoystickControls from './hooks/useJoystickControls';
 import MobileJoysticks from './components/MobileJoysticks';
-// import DebugScene from './scenes/DebugScene';
+import DebugScene from './scenes/DebugScene';
 import DebugPanel from './components/DebugPanel';
-import MazeScene2 from './scenes/MazeScene2';
+// import MazeScene2 from './scenes/MazeScene2';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
@@ -129,9 +129,9 @@ function App() {
           }
         }}
       >
-        <MazeScene2 />
+        {/* <MazeScene2 /> */}
         {/* <MazeScene /> */}
-        {/* <DebugScene /> */}
+        <DebugScene />
       </Canvas>
       <DebugPanel />
     </div>
