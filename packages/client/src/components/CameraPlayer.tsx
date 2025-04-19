@@ -23,7 +23,7 @@ export default function CameraPlayer() {
   const [isMobile, setIsMobile] = useState(false);
   const [showTrail, setShowTrail] = useState(true);
 
-  const [_, setPositionHistory] = useAtom(positionAtom);
+  const [, setPositionHistory] = useAtom(positionAtom);
 
   // Add global toggle function
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function CameraPlayer() {
     }, 200);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [setPositionHistory]);
 
   return (
     <>
