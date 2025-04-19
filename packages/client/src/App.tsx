@@ -8,7 +8,6 @@ import useJoystickControls from './hooks/useJoystickControls';
 import MobileJoysticks from './components/MobileJoysticks';
 import DebugScene from './scenes/DebugScene';
 import DebugPanel from './components/DebugPanel';
-import useSocketEvents from './hooks/useSocketEvents';
 
 useGLTF.preload('/table.glb');
 useGLTF.preload('/sculpture.glb');
