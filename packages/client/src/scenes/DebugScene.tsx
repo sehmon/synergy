@@ -8,7 +8,7 @@ import OrbLight from '../components/OrbLight';
 import useSocketEvents from '../hooks/useSocketEvents';
 
 function DebugScene() {
-  const { isConnected, sliderValue } = useSocketEvents();
+  const { isConnected, sliderValue, positions } = useSocketEvents();
 
   return (
     <Physics gravity={[0, 0, 0]}>
@@ -63,15 +63,19 @@ function DebugScene() {
       <Suspense fallback={null}>
         <ModelLoader>
           <OptimizedScene frustumCulling={true}>
-            <OrbLight
-              position={[0, 2, 0]}
-              color="#ffffff"
-              intensity={sliderValue ?? 1}
-              size={0.4}
-              amplitude={1}
-              speed={0.8}
-              phaseOffset={1}
-            />
+            {positions.length > 0 &&
+              positions.map(([x, z], idx) => (
+                <OrbLight
+                  key={idx.toString()}
+                  position={[x, 2, z]}
+                  color="#ffffff"
+                  intensity={sliderValue ?? 1}
+                  size={0.4}
+                  amplitude={1}
+                  speed={0.8}
+                  phaseOffset={1}
+                />
+              ))}
           </OptimizedScene>
         </ModelLoader>
       </Suspense>

@@ -1,5 +1,3 @@
-// server.ts
-
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -19,6 +17,19 @@ app.use(express.json());
 
 let sliderValue = 0.5; // Default intensity
 
+const n = 4;
+const half = n / 2;
+const positions: [number, number][] = [];
+
+for (let i = -half; i < half; i++) {
+  for (let j = -half; j < half; j++) {
+    positions.push([i, j]);
+  }
+}
+
+const positionScale = 4;
+const scaledPositions = positions.map(([x, y]) => [x * positionScale, y * positionScale]);
+
 // REST endpoint (optional, if needed for polling or debugging)
 app.get('/slider', (req, res) => {
   res.json({ value: sliderValue });
@@ -30,12 +41,19 @@ setInterval(() => {
   console.log(`Broadcasting slider value: ${sliderValue}`);
 }, 3000);
 
+setInterval(() => {
+  io.emit('grid-update', scaledPositions);
+  console.log(`Broadcasting positions: ${scaledPositions}`);
+}, 3000);
+
 // Socket.io connection
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
 
   // Optionally send the current value on connect
   socket.emit('slider-update', sliderValue);
+
+  socket.emit('grid-update', scaledPositions);
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
@@ -79,10 +97,7 @@ app.post('/slider', (req, res) => {
   res.sendStatus(200);
 });
 
-
-
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Socket.IO server running on port ${PORT}`);
 });
-

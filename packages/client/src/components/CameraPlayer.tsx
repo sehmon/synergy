@@ -24,9 +24,9 @@ export default function CameraPlayer() {
   // Add global toggle function
   useEffect(() => {
     window.toggleTrail = () => {
-      setShowTrail(prev => !prev);
+      setShowTrail((prev) => !prev);
     };
-    
+
     return () => {
       window.toggleTrail = undefined;
     };
@@ -139,7 +139,6 @@ export default function CameraPlayer() {
       ) {
         lastPositionRef.current = currentPos.clone();
         positionHistoryRef.current.push(currentPos.clone());
-        console.log('update to position history', positionHistoryRef.current);
       }
     }, 200);
 
@@ -171,12 +170,14 @@ export default function CameraPlayer() {
       </RigidBody>
 
       {/* Trail renderer to visualize the player's path */}
-      {showTrail && <TrailRenderer 
-        positionHistory={positionHistoryRef.current} 
-        color="#00ff88"
-        lineWidth={2}
-        maxLength={100}
-      />}
+      {showTrail && (
+        <TrailRenderer
+          positionHistory={positionHistoryRef.current}
+          color="#00ff88"
+          lineWidth={2}
+          maxLength={100}
+        />
+      )}
 
       {/* Mobile joysticks UI is rendered at the App level */}
     </>

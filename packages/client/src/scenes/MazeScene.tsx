@@ -171,6 +171,13 @@ function MazeScene() {
               enableShadows={false}
             />
 
+            <Model
+              path="/object-w.glb"
+              position={new THREE.Vector3(0, 0.5, -10)}
+              scale={0.5}
+              enableShadows={false}
+            />
+
             <VideoTexture
               url="/flower_video.mov"
               position={[5, 4, -10]}
