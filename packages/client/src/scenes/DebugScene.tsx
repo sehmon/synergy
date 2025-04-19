@@ -6,9 +6,15 @@ import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
 import OrbLight from '../components/OrbLight';
 import useSocketEvents from '../hooks/useSocketEvents';
+import ApiTriggerZone from '../components/ApiTriggerZone';
+import { Box } from '@react-three/drei';
+import { useAtom } from 'jotai';
+import { positionAtom } from '../state/position';
 
 function DebugScene() {
   const { isConnected, sliderValue, positions } = useSocketEvents();
+
+  const [positionHistory] = useAtom(positionAtom);
 
   return (
     <Physics gravity={[0, 0, 0]}>
@@ -63,7 +69,7 @@ function DebugScene() {
       <Suspense fallback={null}>
         <ModelLoader>
           <OptimizedScene frustumCulling={true}>
-            {positions.length > 0 &&
+            {/* {positions.length > 0 &&
               positions.map(([x, z], idx) => (
                 <OrbLight
                   key={idx.toString()}
@@ -75,7 +81,15 @@ function DebugScene() {
                   speed={0.8}
                   phaseOffset={1}
                 />
-              ))}
+              ))} */}
+            <ApiTriggerZone
+              position={[0, 0, 0]}
+              size={[2, 2, 2]} // Width, Height, Depth
+              onEnterZone={() => {
+                console.log('Attempting API call!');
+                console.log(positionHistory);
+              }}
+            />
           </OptimizedScene>
         </ModelLoader>
       </Suspense>

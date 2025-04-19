@@ -10,6 +10,8 @@ import * as THREE from 'three';
 import useKeyboardControls from '../hooks/useKeyboardControls';
 import useJoystickControls from '../hooks/useJoystickControls';
 import TrailRenderer from './TrailRenderer';
+import { useAtom } from 'jotai';
+import { positionAtom } from '../state/position';
 // MobileJoysticks is rendered at App level
 
 export default function CameraPlayer() {
@@ -20,6 +22,8 @@ export default function CameraPlayer() {
   const { joystickState, rotationState, moveJoystick } = useJoystickControls();
   const [isMobile, setIsMobile] = useState(false);
   const [showTrail, setShowTrail] = useState(true);
+
+  const [positionHistory, setPositionHistory] = useAtom(positionAtom);
 
   // Add global toggle function
   useEffect(() => {
@@ -139,6 +143,7 @@ export default function CameraPlayer() {
       ) {
         lastPositionRef.current = currentPos.clone();
         positionHistoryRef.current.push(currentPos.clone());
+        setPositionHistory(positionHistoryRef.current);
       }
     }, 200);
 

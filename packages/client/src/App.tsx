@@ -132,8 +132,8 @@ function App() {
           }
         }}
       >
-        <MazeScene />
-        {/* <DebugScene /> */}
+        {/* <MazeScene /> */}
+        <DebugScene />
       </Canvas>
       <DebugPanel />
     </div>
