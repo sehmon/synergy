@@ -117,4 +117,53 @@ export class TrailService {
       return false;
     }
   }
+  
+  /**
+   * Generate a heatmap grid from all player trail positions
+   */
+  static async generateHeatmap(gridSize: number = 10): Promise<number[][]> {
+    try {
+      // Fetch all positions from the database
+      const positions = await prisma.position.findMany();
+      
+      if (positions.length === 0) {
+        return Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
+      }
+      
+      // Find bounds of all positions
+      let minX = Math.min(...positions.map(p => p.x));
+      let maxX = Math.max(...positions.map(p => p.x));
+      let minZ = Math.min(...positions.map(p => p.z));
+      let maxZ = Math.max(...positions.map(p => p.z));
+      
+      // Add a small buffer to the bounds
+      const buffer = 0.1;
+      const rangeX = (maxX - minX) * (1 + buffer) || 1;
+      const rangeZ = (maxZ - minZ) * (1 + buffer) || 1;
+      
+      // Initialize the grid with zeros
+      const grid: number[][] = Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
+      
+      // Populate the grid
+      positions.forEach(pos => {
+        // Normalize position to 0-1 range
+        const normX = (pos.x - minX) / rangeX;
+        const normZ = (pos.z - minZ) / rangeZ;
+        
+        // Convert to grid coordinates
+        const gridX = Math.min(Math.floor(normX * gridSize), gridSize - 1);
+        const gridZ = Math.min(Math.floor(normZ * gridSize), gridSize - 1);
+        
+        // Increment the grid cell
+        if (gridX >= 0 && gridZ >= 0) {
+          grid[gridZ][gridX] += 1;
+        }
+      });
+      
+      return grid;
+    } catch (error) {
+      console.error('Failed to generate heatmap:', error);
+      return Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
+    }
+  }
 }

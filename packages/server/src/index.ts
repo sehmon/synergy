@@ -136,6 +136,77 @@ app.delete('/api/trails/:id', async (req, res) => {
   }
 });
 
+// API endpoint to get heatmap data
+app.get('/api/heatmap', async (req, res) => {
+  try {
+    // Get grid size from query parameter or use default
+    const gridSizeParam = req.query.gridSize;
+    let gridSize = 10; // Default
+    
+    if (gridSizeParam) {
+      const parsed = parseInt(gridSizeParam as string);
+      // Make sure grid size is valid
+      if (!isNaN(parsed) && parsed > 0 && parsed <= 50) {
+        gridSize = parsed;
+      }
+    }
+    
+    // Generate heatmap grid
+    const grid = await TrailService.generateHeatmap(gridSize);
+    
+    // Validate grid
+    if (!grid || !Array.isArray(grid) || grid.length === 0) {
+      throw new Error('Invalid grid data generated');
+    }
+    
+    // Calculate some statistics
+    let maxValue = 0;
+    let totalActivity = 0;
+    
+    grid.forEach(row => {
+      if (Array.isArray(row)) {
+        row.forEach(cell => {
+          const value = Number(cell) || 0;
+          maxValue = Math.max(maxValue, value);
+          totalActivity += value;
+        });
+      }
+    });
+    
+    // Make sure we have at least some activity
+    if (maxValue === 0) {
+      maxValue = 1; // Prevent division by zero
+    }
+    
+    // Return the grid and stats
+    res.json({
+      grid,
+      gridSize,
+      stats: {
+        maxValue,
+        totalActivity,
+        bounds: { 
+          x: grid[0]?.length || 0, 
+          z: grid.length 
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error generating heatmap:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate heatmap',
+      grid: [],
+      gridSize: 10,
+      stats: {
+        maxValue: 0,
+        totalActivity: 0,
+        bounds: { x: 0, z: 0 }
+      }
+    });
+  }
+});
+
 // Trail visualization page
 app.get('/trails', (req, res) => {
   const filePath = path.join(__dirname, 'html', 'trails.html');
