@@ -7,10 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev": "concurrently \"npm run watch:shared\" \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm run dev --workspace=@synergy/server",
     "dev:client": "npm run dev --workspace=@synergy/client",
-    "build": "npm run build --workspaces",
+    "watch:shared": "npm run watch --workspace=@synergy/shared",
+    "build": "npm run build:shared && npm run build --workspaces",
+    "build:shared": "npm run build --workspace=@synergy/shared",
     "prisma:generate": "npm run prisma:generate --workspace=@synergy/server",
     "prisma:migrate": "npm run prisma:migrate --workspace=@synergy/server",
     "lint": "npm run lint:client && npm run lint:server",

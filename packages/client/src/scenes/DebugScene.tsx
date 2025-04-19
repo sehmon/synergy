@@ -1,6 +1,6 @@
 import { Physics } from '@react-three/rapier';
 import Ground from '../components/Ground';
-import { Suspense } from 'react';
+import { Suspense, useCallback } from 'react';
 import ModelLoader from '../components/ModelLoader';
 import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
@@ -15,6 +15,20 @@ function DebugScene() {
   const { isConnected, sliderValue, positions } = useSocketEvents();
 
   const [positionHistory] = useAtom(positionAtom);
+
+  const handleEnterAPIZone = useCallback(() => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userInfo: { name: 'Sehmon Burnam' },
+        positionHistory: positionHistory,
+      }),
+    };
+    fetch('http://localhost:4000/player-trail', requestOptions).then(
+      (response) => response.json()
+    );
+  }, [positionHistory]);
 
   return (
     <Physics gravity={[0, 0, 0]}>
@@ -83,12 +97,9 @@ function DebugScene() {
                 />
               ))} */}
             <ApiTriggerZone
-              position={[0, 0, 0]}
+              position={[3, 0, 0]}
               size={[2, 2, 2]} // Width, Height, Depth
-              onEnterZone={() => {
-                console.log('Attempting API call!');
-                console.log(positionHistory);
-              }}
+              onEnterZone={handleEnterAPIZone}
             />
           </OptimizedScene>
         </ModelLoader>

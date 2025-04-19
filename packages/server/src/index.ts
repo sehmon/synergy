@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import { PlayerPositionData } from '@synergy/shared';
 
 const app = express();
 const server = http.createServer(app);
@@ -35,15 +36,19 @@ app.get('/slider', (req, res) => {
   res.json({ value: sliderValue });
 });
 
+app.post('/player-trail', (req, res) => {
+  const response = req.body as PlayerPositionData;
+  const { userInfo, positionHistory } = response;
+  console.log('post to /player-trail of length', positionHistory.length);
+})
+
 // Simulate slider updates from some source
 setInterval(() => {
   io.emit('slider-update', sliderValue);
-  console.log(`Broadcasting slider value: ${sliderValue}`);
 }, 3000);
 
 setInterval(() => {
   io.emit('grid-update', scaledPositions);
-  console.log(`Broadcasting positions: ${scaledPositions}`);
 }, 3000);
 
 // Socket.io connection
