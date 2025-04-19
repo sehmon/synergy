@@ -2,6 +2,8 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import { PlayerPositionData } from '@synergy/shared';
 
 const app = express();
@@ -36,11 +38,55 @@ app.get('/slider', (req, res) => {
   res.json({ value: sliderValue });
 });
 
+// Store recent player trails
+let recentTrails: PlayerPositionData[] = [];
+const MAX_STORED_TRAILS = 10;
+
 app.post('/player-trail', (req, res) => {
   const response = req.body as PlayerPositionData;
   const { userInfo, positionHistory } = response;
   console.log('post to /player-trail of length', positionHistory.length);
+  
+  // Add to recent trails with timestamp
+  recentTrails.unshift({
+    ...response,
+    userInfo: {
+      ...response.userInfo,
+      timestamp: new Date().toISOString()
+    }
+  });
+  
+  // Keep only the recent MAX_STORED_TRAILS
+  if (recentTrails.length > MAX_STORED_TRAILS) {
+    recentTrails = recentTrails.slice(0, MAX_STORED_TRAILS);
+  }
+  
+  res.json({ success: true, trailsStored: recentTrails.length });
 })
+
+// API endpoint to get all stored trails
+app.get('/api/trails', (req, res) => {
+  res.json({ trails: recentTrails });
+});
+
+// API endpoint to clear all trails
+app.post('/api/trails/clear', (req, res) => {
+  recentTrails = [];
+  res.json({ success: true, message: 'All trails cleared' });
+});
+
+// Trail visualization page
+app.get('/trails', (req, res) => {
+  const filePath = path.join(__dirname, 'html', 'trails.html');
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading trails.html:', err);
+      res.status(500).send('Error loading visualization page');
+      return;
+    }
+    res.send(data);
+  });
+});
 
 // Simulate slider updates from some source
 setInterval(() => {
