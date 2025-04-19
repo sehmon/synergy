@@ -7,6 +7,7 @@ import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
 import Model from '../components/Model';
 import VideoTexture from '../components/VideoTexture';
+import { Environment } from '@react-three/drei';
 
 function MazeScene2() {
   return (
@@ -86,6 +87,7 @@ function MazeScene2() {
 
       {/* Optional fog for depth */}
       <fog attach="fog" args={['#000', 10, 100]} />
+      <Environment files={'/evening-sky.exr'} background />
     </Physics>
   );
 }
