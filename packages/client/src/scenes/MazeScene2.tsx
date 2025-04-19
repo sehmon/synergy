@@ -57,7 +57,7 @@ function MazeScene2() {
       />
 
       {/* Add the ground */}
-      <Ground grid />
+      <Ground />
 
       <Suspense fallback={null}>
         <ModelLoader>
