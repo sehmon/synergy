@@ -4,16 +4,11 @@ import { Suspense, useCallback } from 'react';
 import ModelLoader from '../components/ModelLoader';
 import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
-import OrbLight from '../components/OrbLight';
-import useSocketEvents from '../hooks/useSocketEvents';
 import ApiTriggerZone from '../components/ApiTriggerZone';
-import { Box } from '@react-three/drei';
 import { useAtom } from 'jotai';
 import { positionAtom } from '../state/position';
 
 function DebugScene() {
-  const { isConnected, sliderValue, positions } = useSocketEvents();
-
   const [positionHistory] = useAtom(positionAtom);
 
   const handleEnterAPIZone = useCallback(() => {

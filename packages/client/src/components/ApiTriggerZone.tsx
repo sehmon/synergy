@@ -1,11 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { RigidBody, CuboidCollider } from '@react-three/rapier';
+import { useState } from 'react';
+import { RigidBody, CuboidCollider, CuboidArgs } from '@react-three/rapier';
 import { Box } from '@react-three/drei'; // For visualization
 
-function ApiTriggerZone({ position, size, onEnterZone }) {
+type ApiTriggerZoneProps = {
+  position: [x: number, y: number, z: number];
+  size: [x: number, y: number, z: number];
+  onEnterZone: VoidFunction;
+};
+
+function ApiTriggerZone({ position, size, onEnterZone }: ApiTriggerZoneProps) {
   const [hasEntered, setHasEntered] = useState(false);
 
-  const handleIntersectionEnter = (event) => {
+  const handleIntersectionEnter = () => {
     // Optional: Check if the intersecting object is the player/camera
     // if (event.other.rigidBodyObject?.name === 'player') {
     if (!hasEntered) {
@@ -16,7 +22,7 @@ function ApiTriggerZone({ position, size, onEnterZone }) {
     // }
   };
 
-  const handleIntersectionExit = (event) => {
+  const handleIntersectionExit = () => {
     // Optional: Check if the exiting object is the player/camera
     // if (event.other.rigidBodyObject?.name === 'player') {
     console.log('Player exited the zone.');
@@ -33,7 +39,7 @@ function ApiTriggerZone({ position, size, onEnterZone }) {
       onIntersectionEnter={handleIntersectionEnter}
       onIntersectionExit={handleIntersectionExit} // Optional: handle exit
     >
-      <CuboidCollider args={size.map((s) => s / 2)} /> {/* Rapier collider */}
+      <CuboidCollider args={size.map((s) => s / 2) as CuboidArgs} />
       {/* Optional: Visual representation (make transparent/wireframe) */}
       <Box args={size} visible={true}>
         <meshStandardMaterial wireframe color="red" transparent opacity={1} />

@@ -15,9 +15,9 @@ export default function TrailRenderer({
   lineWidth = 1,
   maxLength = 100,
 }: TrailRendererProps) {
-  const lineRef = useRef<THREE.Line>(null);
+  const lineRef = useRef<any>(null);
   const geometryRef = useRef<THREE.BufferGeometry | null>(null);
-  
+
   // Create and update the line geometry
   useEffect(() => {
     if (!geometryRef.current) {
@@ -33,26 +33,26 @@ export default function TrailRenderer({
     if (positionHistory.length >= 2) {
       // Limit the trail length if needed
       const limitedHistory = positionHistory.slice(-maxLength);
-      
+
       // Create positions array for the line
       const positions = new Float32Array(limitedHistory.length * 3);
-      
+
       // Fill the positions array with Vector3 values
       limitedHistory.forEach((point, i) => {
         positions[i * 3] = point.x;
         positions[i * 3 + 1] = point.y;
         positions[i * 3 + 2] = point.z;
       });
-      
+
       // Update the line geometry
       geometryRef.current.setAttribute(
         'position',
         new THREE.BufferAttribute(positions, 3)
       );
-      
+
       // Ensure the geometry is updated
       geometryRef.current.computeBoundingSphere();
-      
+
       // Update the line object
       lineRef.current.geometry = geometryRef.current;
     }
