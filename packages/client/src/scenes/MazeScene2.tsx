@@ -13,7 +13,7 @@ function MazeScene2() {
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
       <ambientLight intensity={1} />
-      <fog attach="fog" args={['#2a2a2a', 10, 20]} />
+      {/* <fog attach="fog" args={['#2a2a2a', 10, 20]} /> */}
       <color attach="background" args={['#2a2a2a']} />
 
       {/* Key light - main illumination */}
@@ -78,6 +78,24 @@ function MazeScene2() {
                 url="/fire.mov"
                 position={[-6.5, 1.8, -1]}
                 rotation={[0, Math.PI / 2, Math.PI / 2]}
+                scale={[0.2, 0.2, 0.2]}
+              />
+              <VideoTexture
+                url="/water.mp4"
+                position={[2.5, 2, 0.5]}
+                rotation={[0, Math.PI / 2, Math.PI / 2]}
+                scale={[0.2, 0.2, 0.2]}
+              />
+              <VideoTexture
+                url="/water.mp4"
+                position={[2.5, 2, 3.5]}
+                rotation={[0, -Math.PI / 4, Math.PI / 2]}
+                scale={[0.2, 0.2, 0.2]}
+              />
+              <VideoTexture
+                url="/water.mp4"
+                position={[2.5, 2, -2.5]}
+                rotation={[0, Math.PI / 4, Math.PI / 2]}
                 scale={[0.2, 0.2, 0.2]}
               />
             </group>
