@@ -8,7 +8,7 @@ import CameraPlayer from '../components/CameraPlayer';
 import Model from '../components/Model';
 import VideoTexture from '../components/VideoTexture';
 
-function MazeScene2() {
+function SynergyMaze() {
   return (
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
@@ -113,4 +113,4 @@ function MazeScene2() {
   );
 }
 
-export default MazeScene2;
+export default SynergyMaze;

@@ -9,7 +9,7 @@ import OrbLight from '../components/OrbLight';
 import VideoTexture from '../components/VideoTexture';
 import CameraPlayer from '../components/CameraPlayer';
 
-function MazeScene() {
+function MazePrototype() {
   return (
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
@@ -203,4 +203,4 @@ function MazeScene() {
   );
 }
 
-export default MazeScene;
+export default MazePrototype;

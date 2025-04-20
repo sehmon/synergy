@@ -7,9 +7,13 @@ import Onboarding from './components/Onboarding';
 import useJoystickControls from './hooks/useJoystickControls';
 import MobileJoysticks from './components/MobileJoysticks';
 import DebugPanel from './components/DebugPanel';
-import MazeScene2 from './scenes/MazeScene2';
+import { SCENE_KEY, sceneMap } from './config/sceneConfig';
 
 useGLTF.preload('/full-maze.glb');
+
+const currentSceneKey: SCENE_KEY = 'DEBUG';
+const SceneComponent = sceneMap[currentSceneKey].component;
+const initialPosition = sceneMap[currentSceneKey].initialPosition;
 
 function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
@@ -116,7 +120,7 @@ function App() {
           touchAction: 'none', // Prevent scroll/zoom on mobile
         }}
         shadows
-        camera={{ position: [0, 1, 5], fov: 60 }}
+        camera={{ position: initialPosition, fov: 60 }}
         // Add mobile-friendly options
         onCreated={({ gl }) => {
           if (isMobile) {
@@ -127,9 +131,7 @@ function App() {
           }
         }}
       >
-        <MazeScene2 />
-        {/* <MazeScene /> */}
-        {/* <DebugScene /> */}
+        <SceneComponent />
       </Canvas>
       <DebugPanel />
     </div>
