@@ -10,8 +10,8 @@ import * as THREE from 'three';
 import useKeyboardControls from '../hooks/useKeyboardControls';
 import useJoystickControls from '../hooks/useJoystickControls';
 import TrailRenderer from './TrailRenderer';
-import { useAtom } from 'jotai';
-import { positionAtom } from '../state/position';
+import { useAtom, useAtomValue } from 'jotai';
+import { initialPositionAtom, positionAtom } from '../state/position';
 // MobileJoysticks is rendered at App level
 
 export default function CameraPlayer() {
@@ -23,6 +23,7 @@ export default function CameraPlayer() {
   const [isMobile, setIsMobile] = useState(false);
   const [showTrail, setShowTrail] = useState(true);
 
+  const initialPosition = useAtomValue(initialPositionAtom);
   const [, setPositionHistory] = useAtom(positionAtom);
 
   // Add global toggle function
@@ -45,6 +46,7 @@ export default function CameraPlayer() {
     // Initialize camera to be level
     camera.rotation.x = 0;
     camera.rotation.z = 0;
+    camera.rotation.y = 0;
 
     // Create a function to force camera to stay level
     const keepCameraLevel = () => {
@@ -141,6 +143,7 @@ export default function CameraPlayer() {
         !lastPositionRef.current ||
         !lastPositionRef.current.equals(currentPos)
       ) {
+        console.log(currentPos);
         lastPositionRef.current = currentPos.clone();
         positionHistoryRef.current.push(currentPos.clone());
         setPositionHistory(positionHistoryRef.current);
@@ -159,7 +162,7 @@ export default function CameraPlayer() {
       <RigidBody
         ref={ref}
         type="dynamic"
-        position={[0, 1, 0]}
+        position={initialPosition}
         mass={1}
         enabledRotations={[false, false, false]}
         colliders={false} // Prevent auto-generation from child mesh

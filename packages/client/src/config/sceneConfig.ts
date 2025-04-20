@@ -15,7 +15,7 @@ export const sceneMap: Record<SCENE_KEY, SCENE_PROPS> = {
   },
   SYNERGY: {
     component: SynergyMaze,
-    initialPosition: [0, 1, 5],
+    initialPosition: [-12.70, 1, -4.586],
   },
   DEBUG: {
     component: DebugScene,
