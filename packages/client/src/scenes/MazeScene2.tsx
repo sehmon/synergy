@@ -7,13 +7,14 @@ import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
 import Model from '../components/Model';
 import VideoTexture from '../components/VideoTexture';
-import { Environment } from '@react-three/drei';
 
 function MazeScene2() {
   return (
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={1} />
+      <fog attach="fog" args={['#2a2a2a', 10, 20]} />
+      <color attach="background" args={['#2a2a2a']} />
 
       {/* Key light - main illumination */}
       <directionalLight
@@ -84,10 +85,6 @@ function MazeScene2() {
         </ModelLoader>
       </Suspense>
       <CameraPlayer />
-
-      {/* Optional fog for depth */}
-      <fog attach="fog" args={['#000', 10, 100]} />
-      <Environment files={'/evening-sky.exr'} background />
     </Physics>
   );
 }
