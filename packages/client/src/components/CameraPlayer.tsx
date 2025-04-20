@@ -181,8 +181,8 @@ export default function CameraPlayer() {
       {showTrail && (
         <TrailRenderer
           positionHistory={positionHistoryRef.current}
-          color="#00ff88"
-          lineWidth={2}
+          color="#bbbb00"
+          lineWidth={10}
           maxLength={100}
         />
       )}

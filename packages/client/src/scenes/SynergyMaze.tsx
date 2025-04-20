@@ -12,9 +12,9 @@ function SynergyMaze() {
   return (
     <Physics gravity={[0, 0, 0]}>
       {/* Ambient light - reduced intensity for better contrast */}
-      <ambientLight intensity={1} />
-      {/* <fog attach="fog" args={['#2a2a2a', 10, 20]} /> */}
-      <color attach="background" args={['#2a2a2a']} />
+      <ambientLight intensity={10} />
+      <fog attach="fog" args={['#111', 5, 20]} />
+      <color attach="background" args={['#111']} />
 
       {/* Key light - main illumination */}
       <directionalLight
