@@ -67,6 +67,12 @@ function MazeScene2() {
             <group scale={4} position={new THREE.Vector3(0, 0, -20)}>
               <RigidBody type="fixed" colliders="trimesh">
                 <Model path="/full-maze.glb" />
+                <Model
+                  path="/object-w.glb"
+                  position={new THREE.Vector3(1, 0.1, 0)}
+                  scale={0.25}
+                  enableShadows={false}
+                />
               </RigidBody>
               <VideoTexture
                 url="/flower_video.mov"
