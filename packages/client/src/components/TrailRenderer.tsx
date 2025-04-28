@@ -11,7 +11,7 @@ interface TrailRendererProps {
 
 export default function TrailRenderer({
   positionHistory,
-  color = '#ff0000',
+  // color = '#fff',
   lineWidth = 1,
   maxLength = 100,
 }: TrailRendererProps) {
@@ -61,7 +61,7 @@ export default function TrailRenderer({
   return (
     <line ref={lineRef}>
       <bufferGeometry ref={geometryRef} />
-      <lineBasicMaterial color={color} linewidth={lineWidth} />
+      <lineBasicMaterial color={0xffffff} linewidth={lineWidth} />
     </line>
   );
 }

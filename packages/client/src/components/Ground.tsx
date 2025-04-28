@@ -6,7 +6,7 @@ function Ground({ grid = false }: { grid?: boolean }) {
       {/* Simple floor plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color="#111" />
+        <meshStandardMaterial color="#000" />
       </mesh>
 
       {/* Optional grid helper for better spatial awareness */}
