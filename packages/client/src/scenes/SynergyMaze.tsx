@@ -7,7 +7,7 @@ import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
 import Model from '../components/Model';
 import VideoTexture from '../components/VideoTexture';
-import OrbLight from '../components/OrbLight';
+// import OrbLight from '../components/OrbLight';
 import {
   EffectComposer,
   Bloom,
@@ -145,7 +145,7 @@ function SynergyMaze() {
                   scale={[0.2, 0.2, 0.2]}
                 />
               </group>
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => {
+              {/* {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => {
                 return (
                   <OrbLight
                     position={[-12.7 + n * 4, 0, -8.9]}
@@ -157,7 +157,7 @@ function SynergyMaze() {
                     phaseOffset={2}
                   />
                 );
-              })}
+              })} */}
             </OptimizedScene>
           </ModelLoader>
         </Suspense>
