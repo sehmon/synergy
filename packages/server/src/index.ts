@@ -274,7 +274,8 @@ app.get('/control', (req, res) => {
 
 app.post('/slider', (req, res) => {
   const { value } = req.body;
-  sliderValue = parseFloat(value.toFixed(2));
+  const sliderNum = Number(value);
+  sliderValue = parseFloat(sliderNum.toFixed(2));
   io.emit('slider-update', sliderValue);
   console.log(`Updated slider to: ${sliderValue}`);
   res.sendStatus(200);
