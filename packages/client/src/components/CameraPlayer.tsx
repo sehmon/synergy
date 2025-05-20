@@ -143,7 +143,6 @@ export default function CameraPlayer() {
         !lastPositionRef.current ||
         !lastPositionRef.current.equals(currentPos)
       ) {
-        console.log(currentPos);
         lastPositionRef.current = currentPos.clone();
         positionHistoryRef.current.push(currentPos.clone());
         setPositionHistory(positionHistoryRef.current);
