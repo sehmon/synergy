@@ -6,6 +6,7 @@ export type SCENE_KEY = 'MAZE' | 'SYNERGY' | 'DEBUG';
 export type SCENE_PROPS = {
   component: React.FC;
   initialPosition: [number, number, number];
+  initialCameraAngle?: [number, number, number];
 }
 
 export const sceneMap: Record<SCENE_KEY, SCENE_PROPS> = {
@@ -15,7 +16,8 @@ export const sceneMap: Record<SCENE_KEY, SCENE_PROPS> = {
   },
   SYNERGY: {
     component: SynergyMaze,
-    initialPosition: [-12.70, 1, -4.586],
+    initialPosition: [19.80, 1, -18.6],
+    initialCameraAngle: [0, Math.PI/2, 0],
   },
   DEBUG: {
     component: DebugScene,

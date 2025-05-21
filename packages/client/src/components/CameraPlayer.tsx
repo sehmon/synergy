@@ -11,7 +11,11 @@ import useKeyboardControls from '../hooks/useKeyboardControls';
 import useJoystickControls from '../hooks/useJoystickControls';
 import TrailRenderer from './TrailRenderer';
 import { useAtom, useAtomValue } from 'jotai';
-import { initialPositionAtom, positionAtom } from '../state/position';
+import {
+  initialPositionAtom,
+  initialCameraAngleAtom,
+  positionAtom,
+} from '../state/position';
 // MobileJoysticks is rendered at App level
 
 export default function CameraPlayer() {
@@ -24,6 +28,7 @@ export default function CameraPlayer() {
   const [showTrail, setShowTrail] = useState(true);
 
   const initialPosition = useAtomValue(initialPositionAtom);
+  const initialCameraAngle = useAtomValue(initialCameraAngleAtom);
   const [, setPositionHistory] = useAtom(positionAtom);
 
   // Add global toggle function
@@ -44,10 +49,17 @@ export default function CameraPlayer() {
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
     // Initialize camera to be level
-    camera.rotation.x = 0;
-    camera.rotation.z = 0;
-    camera.rotation.y = 0;
-
+    if (initialCameraAngle) {
+      console.log('setting camera rotation to', initialCameraAngle);
+      camera.rotation.set(
+        initialCameraAngle[0],
+        initialCameraAngle[1],
+        initialCameraAngle[2]
+      );
+    } else {
+      console.log('setting camera rotation to zero');
+      camera.rotation.set(0, 0, 0);
+    }
     // Create a function to force camera to stay level
     const keepCameraLevel = () => {
       camera.rotation.x = 0;
@@ -60,7 +72,7 @@ export default function CameraPlayer() {
     return () => {
       window.removeEventListener('deviceorientation', keepCameraLevel);
     };
-  }, [camera]);
+  }, [camera, initialCameraAngle]);
 
   const direction = new THREE.Vector3();
   const right = new THREE.Vector3();

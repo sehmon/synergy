@@ -9,13 +9,14 @@ import MobileJoysticks from './components/MobileJoysticks';
 import DebugPanel from './components/DebugPanel';
 import { SCENE_KEY, sceneMap } from './config/sceneConfig';
 import { useSetAtom } from 'jotai';
-import { initialPositionAtom } from './state/position';
+import { initialPositionAtom, initialCameraAngleAtom } from './state/position';
 
 useGLTF.preload('/full-maze.glb');
 
 const currentSceneKey: SCENE_KEY = 'SYNERGY';
 const SceneComponent = sceneMap[currentSceneKey].component;
 const initialPosition = sceneMap[currentSceneKey].initialPosition;
+const initialCameraAngle = sceneMap[currentSceneKey].initialCameraAngle;
 
 function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
@@ -24,6 +25,7 @@ function App() {
   const { moveJoystick, lookJoystick } = useJoystickControls();
 
   const setInitialPosition = useSetAtom(initialPositionAtom);
+  const setInitialCameraAngle = useSetAtom(initialCameraAngleAtom);
 
   // Detect mobile and fix vh for iOS Safari
   useEffect(() => {
@@ -54,7 +56,8 @@ function App() {
 
   useEffect(() => {
     setInitialPosition(initialPosition);
-  }, [initialPosition, setInitialPosition]);
+    if (initialCameraAngle) setInitialCameraAngle(initialCameraAngle);
+  }, [setInitialPosition, setInitialCameraAngle]);
 
   const onOnboardingComplete = () => {
     setOnboardingComplete(true);
