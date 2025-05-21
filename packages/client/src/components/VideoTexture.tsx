@@ -95,7 +95,6 @@ const VideoTexture = ({
     };
 
     const handleCanPlay = () => {
-      console.log('Video can play:', url);
       setVideoLoaded(true);
       video.play().catch((err) => {
         console.warn('Auto-play prevented:', err);
@@ -107,10 +106,6 @@ const VideoTexture = ({
     video.addEventListener('canplaythrough', handleCanPlay);
 
     // Now set the source - prefer MP4 for Safari
-    console.log(
-      'Loading video from URL:',
-      isSafari ? safariCompatibleUrl : url
-    );
     video.src = isSafari ? safariCompatibleUrl : url;
 
     // Load the video
