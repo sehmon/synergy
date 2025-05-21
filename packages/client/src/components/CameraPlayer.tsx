@@ -60,7 +60,6 @@ export default function CameraPlayer() {
       console.log('setting camera rotation to zero');
       camera.rotation.set(0, 0, 0);
     }
-
   }, [camera, initialCameraAngle]);
 
   const direction = new THREE.Vector3();
@@ -121,21 +120,14 @@ export default function CameraPlayer() {
       const lookSensitivity = 2.0;
 
       // Apply horizontal rotation from joystick
-      if (rotationState.rotateY !== 0) {
-        camera.rotation.y += rotationState.rotateY * delta * lookSensitivity;
-      }
+      const euler = new THREE.Euler().copy(camera.rotation);
+      euler.order = 'YXZ';
 
-      // Apply vertical rotation with clamping to keep the camera upright
-      if (rotationState.rotateX !== 0) {
-        camera.rotation.x = THREE.MathUtils.clamp(
-          camera.rotation.x + rotationState.rotateX * delta * lookSensitivity,
-          -Math.PI / 2,
-          Math.PI / 2
-        );
-      }
+      euler.y -= rotationState.rotateY * delta * lookSensitivity; // yaw
+      euler.x -= rotationState.rotateX * delta * lookSensitivity; // pitch
+      euler.x = THREE.MathUtils.clamp(euler.x, -Math.PI / 2, Math.PI / 2);
 
-      // Always keep Z rotation at zero so the player stays upright
-      camera.rotation.z = 0;
+      camera.rotation.copy(euler);
     }
   });
 
