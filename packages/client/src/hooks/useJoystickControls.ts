@@ -190,15 +190,17 @@ export default function useJoystickControls() {
   useEffect(() => {
     if (lookJoystick.active) {
       // Calculate how far the look joystick has moved from the center
-      const maxDistance = 50;  // Max distance in pixels
+      const maxDistance = 50; // Max distance in pixels
       const dx = lookJoystick.currentX - lookJoystick.startX;
-      
+      const dy = lookJoystick.currentY - lookJoystick.startY;
+
       // Convert to rotation speed (-1 to 1)
       const rotateY = Math.max(-1, Math.min(1, -dx / maxDistance));
-      
+      const rotateX = Math.max(-1, Math.min(1, -dy / maxDistance));
+
       setRotationState({
-        rotateX: 0, // Keep camera level (no vertical rotation)
-        rotateY: rotateY,
+        rotateX,
+        rotateY,
       });
     } else {
       // Reset rotation when joystick released
