@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+
 import onboardingImage1 from '../assets/frame1.png';
 import onboardingImage2 from '../assets/frame2.png';
+import { preloadAssets } from '../config/preloadAssets';
 
 type OnboardingProps = {
   onOnboardingComplete: () => void;
@@ -71,6 +73,7 @@ function Onboarding({ onOnboardingComplete }: OnboardingProps) {
   useEffect(() => {
     // Detect if user is on mobile
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    preloadAssets();
   }, []);
 
   // Handle all touch/click events in one function
