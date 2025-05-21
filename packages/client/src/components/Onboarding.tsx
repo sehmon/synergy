@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useProgress } from '@react-three/drei';
 
 import onboardingImage1 from '../assets/frame1.png';
 import onboardingImage2 from '../assets/frame2.png';
@@ -69,6 +70,8 @@ function OnboardingImageStep({
 function Onboarding({ onOnboardingComplete }: OnboardingProps) {
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const { progress } = useProgress();
+  const assetsLoaded = progress === 100;
 
   useEffect(() => {
     // Detect if user is on mobile
@@ -103,11 +106,13 @@ function Onboarding({ onOnboardingComplete }: OnboardingProps) {
       >
         <h1 style={{ color: 'white', textAlign: 'center' }}>s-y-n-e-r-g-y</h1>
         <div
+          onClick={assetsLoaded ? () => handleInteraction(4) : undefined}
+          onTouchStart={assetsLoaded ? () => handleInteraction(4) : undefined}
           style={{
             fontSize: '24px',
             textAlign: 'center',
             color: '#eee',
-            cursor: 'pointer',
+            cursor: assetsLoaded ? 'pointer' : 'default',
             background: 'rgba(255,255,255,0.2)',
             border: '1px solid rgba(255,255,255,0.3)',
             borderRadius: '8px',
@@ -117,11 +122,14 @@ function Onboarding({ onOnboardingComplete }: OnboardingProps) {
             WebkitTapHighlightColor: 'transparent',
             userSelect: 'none',
             WebkitUserSelect: 'none',
+            opacity: assetsLoaded ? 1 : 0.5,
           }}
-          onClick={() => handleInteraction(4)}
-          onTouchStart={() => handleInteraction(4)}
         >
-          {isMobile ? 'TAP TO BEGIN' : 'CLICK TO BEGIN'}
+          {assetsLoaded
+            ? isMobile
+              ? 'TAP TO BEGIN'
+              : 'CLICK TO BEGIN'
+            : 'LOADING...'}
         </div>
 
         {isMobile && (
