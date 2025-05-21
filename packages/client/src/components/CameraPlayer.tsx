@@ -48,7 +48,7 @@ export default function CameraPlayer() {
   useEffect(() => {
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
-    // Initialize camera to be level
+    // Initialize camera rotation
     if (initialCameraAngle) {
       console.log('setting camera rotation to', initialCameraAngle);
       camera.rotation.set(
@@ -60,18 +60,7 @@ export default function CameraPlayer() {
       console.log('setting camera rotation to zero');
       camera.rotation.set(0, 0, 0);
     }
-    // Create a function to force camera to stay level
-    const keepCameraLevel = () => {
-      camera.rotation.x = 0;
-      camera.rotation.z = 0;
-    };
 
-    // Add event listener to keep camera level on device orientation change
-    window.addEventListener('deviceorientation', keepCameraLevel);
-
-    return () => {
-      window.removeEventListener('deviceorientation', keepCameraLevel);
-    };
   }, [camera, initialCameraAngle]);
 
   const direction = new THREE.Vector3();
@@ -131,13 +120,21 @@ export default function CameraPlayer() {
       // Apply rotation using the rotationState values instead of raw joystick position
       const lookSensitivity = 2.0;
 
-      // Apply horizontal rotation from joystick, keeping the camera level
+      // Apply horizontal rotation from joystick
       if (rotationState.rotateY !== 0) {
         camera.rotation.y += rotationState.rotateY * delta * lookSensitivity;
       }
 
-      // Always keep camera level by forcing X and Z rotation to zero
-      camera.rotation.x = 0;
+      // Apply vertical rotation with clamping to keep the camera upright
+      if (rotationState.rotateX !== 0) {
+        camera.rotation.x = THREE.MathUtils.clamp(
+          camera.rotation.x + rotationState.rotateX * delta * lookSensitivity,
+          -Math.PI / 2,
+          Math.PI / 2
+        );
+      }
+
+      // Always keep Z rotation at zero so the player stays upright
       camera.rotation.z = 0;
     }
   });
