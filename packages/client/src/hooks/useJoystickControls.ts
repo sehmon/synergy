@@ -48,35 +48,46 @@ export default function useJoystickControls() {
   }, []);
 
   // Handle touch start
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    // Prevent default behavior to avoid scrolling
-    e.preventDefault();
-    
-    Array.from(e.touches).forEach(touch => {
-      const x = touch.clientX;
-      const y = touch.clientY;
-      
-      if (isLeftSide(x)) {
-        // Movement joystick (left side)
-        setMoveJoystick({
-          active: true,
-          startX: x,
-          startY: y,
-          currentX: x,
-          currentY: y,
-        });
-      } else {
-        // Look joystick (right side)
-        setLookJoystick({
-          active: true,
-          startX: x,
-          startY: y,
-          currentX: x,
-          currentY: y,
-        });
-      }
-    });
-  }, [isLeftSide]);
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      // Prevent default behavior to avoid scrolling
+      e.preventDefault();
+
+      Array.from(e.touches).forEach((touch) => {
+        const x = touch.clientX;
+        const y = touch.clientY;
+
+        if (isLeftSide(x)) {
+          // Only initialize if the movement joystick isn't already active
+          setMoveJoystick((prev) =>
+            prev.active
+              ? prev
+              : {
+                  active: true,
+                  startX: x,
+                  startY: y,
+                  currentX: x,
+                  currentY: y,
+                }
+          );
+        } else {
+          // Only initialize if the look joystick isn't already active
+          setLookJoystick((prev) =>
+            prev.active
+              ? prev
+              : {
+                  active: true,
+                  startX: x,
+                  startY: y,
+                  currentX: x,
+                  currentY: y,
+                }
+          );
+        }
+      });
+    },
+    [isLeftSide]
+  );
 
   // Handle touch move
   const handleTouchMove = useCallback((e: TouchEvent) => {
