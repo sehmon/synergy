@@ -123,8 +123,8 @@ export default function CameraPlayer() {
       const euler = new THREE.Euler().copy(camera.rotation);
       euler.order = 'YXZ';
 
-      euler.y -= rotationState.rotateY * delta * lookSensitivity; // yaw
-      euler.x -= rotationState.rotateX * delta * lookSensitivity; // pitch
+      euler.y += rotationState.rotateY * delta * lookSensitivity; // yaw
+      euler.x += rotationState.rotateX * delta * lookSensitivity; // pitch
       euler.x = THREE.MathUtils.clamp(euler.x, -Math.PI / 2, Math.PI / 2);
 
       camera.rotation.copy(euler);
