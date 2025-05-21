@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
 import './App.css';
 import './mobileControls.css';
 import Onboarding from './components/Onboarding';
@@ -10,8 +9,6 @@ import DebugPanel from './components/DebugPanel';
 import { SCENE_KEY, sceneMap } from './config/sceneConfig';
 import { useSetAtom } from 'jotai';
 import { initialPositionAtom, initialCameraAngleAtom } from './state/position';
-
-useGLTF.preload('/full-maze.glb');
 
 const currentSceneKey: SCENE_KEY = 'SYNERGY';
 const SceneComponent = sceneMap[currentSceneKey].component;
