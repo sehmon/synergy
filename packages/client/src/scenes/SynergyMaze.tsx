@@ -13,6 +13,7 @@ import {
   Bloom,
   DepthOfField,
 } from '@react-three/postprocessing';
+import { getModelUrl } from '../config/assetPaths';
 // import { useHelper } from '@react-three/drei';
 
 // const fogColor = '#a33600';
@@ -100,15 +101,15 @@ function SynergyMaze() {
             <OptimizedScene frustumCulling={false}>
               <group scale={4} position={new THREE.Vector3(0, 0, -20)}>
                 <RigidBody type="fixed" colliders="trimesh">
-                  <Model path="/full-maze.glb" />
+                  <Model path={getModelUrl('full-maze-compressed.glb')} />
                   <Model
-                    path="/object-w.glb"
+                    path={getModelUrl('object-w-compressed.glb')}
                     position={new THREE.Vector3(1, 0.1, 0)}
                     scale={0.25}
                     enableShadows={false}
                   />
                   <Model
-                    path="/object-e.glb"
+                    path={getModelUrl('object-e-compressed.glb')}
                     position={new THREE.Vector3(8, 0, 10)}
                     scale={0.45}
                     enableShadows={false}

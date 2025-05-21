@@ -1,5 +1,6 @@
 import { useProgress, Html } from '@react-three/drei';
 import { useEffect } from 'react';
+import { DRACOLoader } from 'three/examples/jsm/Addons.js';
 
 interface ModelLoaderProps {
   children: React.ReactNode;
@@ -7,6 +8,17 @@ interface ModelLoaderProps {
 
 function ModelLoader({ children }: ModelLoaderProps) {
   const { active, progress, errors, item } = useProgress();
+
+  useEffect(() => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath(
+      'https://www.gstatic.com/draco/versioned/decoders/1.5.6/'
+    );
+    dracoLoader.preload();
+    return () => {
+      dracoLoader.dispose();
+    };
+  }, []);
 
   useEffect(() => {
     if (errors.length > 0) {

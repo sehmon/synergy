@@ -8,6 +8,7 @@ import Model from '../components/Model';
 import OrbLight from '../components/OrbLight';
 import VideoTexture from '../components/VideoTexture';
 import CameraPlayer from '../components/CameraPlayer';
+import { getModelUrl } from '../config/assetPaths';
 
 function MazePrototype() {
   return (
@@ -64,7 +65,10 @@ function MazePrototype() {
         <ModelLoader>
           <OptimizedScene frustumCulling={true}>
             {/* Close objects with full detail and shadows */}
-            <Model path="/table.glb" enableShadows={true} />
+            <Model
+              path={getModelUrl('table-compressed.glb')}
+              enableShadows={true}
+            />
 
             {/* Orb light hovering above the table */}
             <OrbLight
@@ -114,35 +118,35 @@ function MazePrototype() {
             />
 
             <Model
-              path="/sculpture.glb"
+              path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(-5, 0, -7)}
               scale={0.3}
               enableShadows={true}
             />
 
             <Model
-              path="/sculpture.glb"
+              path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(5, 0, -7)}
               scale={0.3}
               enableShadows={true}
             />
 
             <Model
-              path="/sculpture.glb"
+              path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(0, 0, -12)}
               scale={0.4}
               enableShadows={true}
             />
 
             <Model
-              path="/sculpture.glb"
+              path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(-7, 0, -15)}
               scale={0.25}
               enableShadows={false}
             />
 
             <Model
-              path="/sculpture.glb"
+              path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(7, 0, -15)}
               scale={0.25}
               enableShadows={false}
@@ -158,21 +162,21 @@ function MazePrototype() {
                 </RigidBody> */}
 
             <Model
-              path="/object-e.glb"
+              path={getModelUrl('object-e-compressed.glb')}
               position={new THREE.Vector3(25, 3, 10)}
               scale={1}
               enableShadows={false}
             />
 
             <Model
-              path="/object-n.glb"
+              path={getModelUrl('object-n-compressed.glb')}
               position={new THREE.Vector3(7, 0, -15)}
               scale={0.25}
               enableShadows={false}
             />
 
             <Model
-              path="/object-w.glb"
+              path={getModelUrl('object-w-compressed.glb')}
               position={new THREE.Vector3(0, 0.5, -10)}
               scale={0.5}
               enableShadows={false}

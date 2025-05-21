@@ -23,7 +23,7 @@ function Model({
   const { scene } = useGLTF(path, true);
   // We need to clone the scene to use it multiple times
   const clonedScene = useRef(scene.clone(true));
-  
+
   useEffect(() => {
     // Configure shadow settings on the cloned scene
     if (clonedScene.current) {

@@ -24,7 +24,7 @@ function ModelWithLOD({
   const groupRef = useRef<Group>(null);
   // Create the LOD object on first render
   const lodRef = useRef(new LOD());
-  const { scene } = useGLTF(path);
+  const { scene } = useGLTF(path, true);
 
   // Create different LOD levels
   const levels = useMemo(() => {
@@ -54,7 +54,7 @@ function ModelWithLOD({
     const lowDetail = scene.clone();
     lowDetail.traverse((node: Object3D) => {
       if ((node as Mesh).isMesh) {
-        const mesh = node as Mesh;  // Explicitly cast to Mesh
+        const mesh = node as Mesh; // Explicitly cast to Mesh
         mesh.castShadow = false;
         mesh.receiveShadow = false;
         // Replace materials with simplified versions
@@ -113,7 +113,7 @@ function ModelWithLOD({
 
     // Store a reference to the current group to avoid the React hooks warning
     const currentGroup = groupRef.current;
-    
+
     return () => {
       // Cleanup specific to this component
       if (currentGroup && currentGroup.children.includes(lod)) {
