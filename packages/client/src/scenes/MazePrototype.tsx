@@ -179,7 +179,7 @@ function MazePrototype() {
             />
 
             <VideoTexture
-              url="/flower_video.mov"
+              url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/flower_video.mov"
               position={[5, 4, -10]}
               rotation={[0, -Math.PI / 4, 0]}
               scale={[0.5, 0.5, 0.5]}
@@ -187,7 +187,7 @@ function MazePrototype() {
 
             {/* Safari will automatically try to use .mp4 version */}
             <VideoTexture
-              url="/fire.mov"
+              url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/fire.mov"
               position={[0, 2, -12]}
               rotation={[0, 0, Math.PI / 2]}
               scale={[0.2, 0.2, 0.25]}

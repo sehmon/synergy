@@ -115,31 +115,31 @@ function SynergyMaze() {
                   />
                 </RigidBody>
                 <VideoTexture
-                  url="/flower_video.mov"
+                  url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/flower_video.mov"
                   position={[-1.25, 0.01, 5]}
                   rotation={[Math.PI / 2, 0, 0]}
                   scale={[0.4, 0.4, 0.4]}
                 />
                 <VideoTexture
-                  url="/fire.mov"
+                  url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/fire.mov"
                   position={[-6.5, 1.8, -1]}
                   rotation={[0, Math.PI / 2, Math.PI / 2]}
                   scale={[0.2, 0.2, 0.2]}
                 />
                 <VideoTexture
-                  url="/water.mp4"
+                  url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/water.mp4"
                   position={[2.5, 2, 0.5]}
                   rotation={[0, Math.PI / 2, Math.PI / 2]}
                   scale={[0.2, 0.2, 0.2]}
                 />
                 <VideoTexture
-                  url="/water.mp4"
+                  url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/water.mp4"
                   position={[2.5, 2, 3.5]}
                   rotation={[0, -Math.PI / 4, Math.PI / 2]}
                   scale={[0.2, 0.2, 0.2]}
                 />
                 <VideoTexture
-                  url="/water.mp4"
+                  url="https://synergy-assets-11412.s3.us-west-2.amazonaws.com/videos/water.mp4"
                   position={[2.5, 2, -2.5]}
                   rotation={[0, Math.PI / 4, Math.PI / 2]}
                   scale={[0.2, 0.2, 0.2]}
