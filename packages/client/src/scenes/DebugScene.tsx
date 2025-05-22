@@ -106,7 +106,6 @@ function DebugScene() {
       <directionalLight
         position={[5, 5, 5]}
         intensity={1.5}
-        castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-far={50}
@@ -132,7 +131,6 @@ function DebugScene() {
         color="#ffffff"
         decay={2}
         distance={20}
-        castShadow
       />
 
       {/* Ground fill light */}

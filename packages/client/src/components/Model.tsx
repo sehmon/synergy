@@ -17,7 +17,7 @@ function Model({
   path,
   position = new Vector3(0, 0, 0),
   scale = 0.2,
-  enableShadows = true,
+  enableShadows = false,
 }: ModelProps) {
   // Load the model with caching enabled
   const { scene } = useGLTF(path, true);
@@ -29,8 +29,8 @@ function Model({
     if (clonedScene.current) {
       clonedScene.current.traverse((node) => {
         if ((node as Mesh).isMesh && enableShadows) {
-          node.castShadow = true;
-          node.receiveShadow = true;
+          node.castShadow = false;
+          node.receiveShadow = false;
         }
       });
     }

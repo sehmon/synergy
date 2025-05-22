@@ -43,31 +43,8 @@ function SynergyMaze() {
       </EffectComposer>
 
       <Physics gravity={[0, 0, 0]}>
-        {/* Ambient light - reduced intensity for better contrast */}
-        {/* <ambientLight intensity={3} /> */}
         <fog attach="fog" args={[fogColor, 1, 30]} />
         <color attach="background" args={[fogColor]} />
-
-        {/* Key light - main illumination */}
-        {/* <directionalLight
-        position={[5, 5, 5]}
-        intensity={1.5}
-        castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-far={50}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
-      /> */}
-
-        {/* Fill light - softer light from opposite side */}
-        {/* <directionalLight
-        position={[-5, 3, -5]}
-        intensity={0.8}
-        color="#c0e0ff"
-      /> */}
 
         {/* Rim light - highlights edges */}
         <spotLight
@@ -79,19 +56,9 @@ function SynergyMaze() {
           color="#ffffff"
           decay={0.1}
           distance={20}
-          castShadow
           target={target}
         />
         <primitive object={target} />
-
-        {/* Ground fill light */}
-        {/* <pointLight
-        position={[0, -3, 0]}
-        intensity={0.5}
-        color="#ffffe0"
-        decay={2}
-        distance={10}
-      /> */}
 
         {/* Add the ground */}
         <Ground />

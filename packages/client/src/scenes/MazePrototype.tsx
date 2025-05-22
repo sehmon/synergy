@@ -20,7 +20,6 @@ function MazePrototype() {
       <directionalLight
         position={[5, 5, 5]}
         intensity={1.5}
-        castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-far={50}
@@ -65,10 +64,7 @@ function MazePrototype() {
         <ModelLoader>
           <OptimizedScene frustumCulling={true}>
             {/* Close objects with full detail and shadows */}
-            <Model
-              path={getModelUrl('table-compressed.glb')}
-              enableShadows={true}
-            />
+            <Model path={getModelUrl('table-compressed.glb')} />
 
             {/* Orb light hovering above the table */}
             <OrbLight
@@ -121,35 +117,30 @@ function MazePrototype() {
               path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(-5, 0, -7)}
               scale={0.3}
-              enableShadows={true}
             />
 
             <Model
               path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(5, 0, -7)}
               scale={0.3}
-              enableShadows={true}
             />
 
             <Model
               path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(0, 0, -12)}
               scale={0.4}
-              enableShadows={true}
             />
 
             <Model
               path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(-7, 0, -15)}
               scale={0.25}
-              enableShadows={false}
             />
 
             <Model
               path={getModelUrl('sculpture-compressed.glb')}
               position={new THREE.Vector3(7, 0, -15)}
               scale={0.25}
-              enableShadows={false}
             />
 
             {/* <RigidBody type="fixed" colliders="trimesh">
@@ -165,21 +156,18 @@ function MazePrototype() {
               path={getModelUrl('object-e-compressed.glb')}
               position={new THREE.Vector3(25, 3, 10)}
               scale={1}
-              enableShadows={false}
             />
 
             <Model
               path={getModelUrl('object-n-compressed.glb')}
               position={new THREE.Vector3(7, 0, -15)}
               scale={0.25}
-              enableShadows={false}
             />
 
             <Model
               path={getModelUrl('object-w-compressed.glb')}
               position={new THREE.Vector3(0, 0.5, -10)}
               scale={0.5}
-              enableShadows={false}
             />
 
             <VideoTexture
