@@ -5,7 +5,7 @@ import { Suspense, useRef, useMemo } from 'react';
 import ModelLoader from '../components/ModelLoader';
 import OptimizedScene from '../components/OptimizedScene';
 import CameraPlayer from '../components/CameraPlayer';
-import Model from '../components/Model';
+import ModelWithLOD from '../components/ModelWithLOD';
 import VideoTexture from '../components/VideoTexture';
 // import OrbLight from '../components/OrbLight';
 import {
@@ -68,18 +68,16 @@ function SynergyMaze() {
             <OptimizedScene frustumCulling={false}>
               <group scale={4} position={new THREE.Vector3(0, 0, -20)}>
                 <RigidBody type="fixed" colliders="trimesh">
-                  <Model path={getModelUrl('full-maze-compressed.glb')} />
-                  <Model
+                  <ModelWithLOD path={getModelUrl('full-maze-compressed.glb')} />
+                  <ModelWithLOD
                     path={getModelUrl('object-w-compressed.glb')}
                     position={new THREE.Vector3(1, 0.1, 0)}
                     scale={0.25}
-                    enableShadows={false}
                   />
-                  <Model
+                  <ModelWithLOD
                     path={getModelUrl('object-e-compressed.glb')}
                     position={new THREE.Vector3(8, 0, 10)}
                     scale={0.45}
-                    enableShadows={false}
                   />
                 </RigidBody>
                 <VideoTexture
